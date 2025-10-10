@@ -1,5 +1,15 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
-  lintOnSave: false
+  lintOnSave: false,
+    // 关键：开发时代理 /api 到 8080
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' } // 去掉 /api 前缀
+      }
+    }
+  }
 })
