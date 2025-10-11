@@ -10,7 +10,8 @@
   <div
     :class="[
       // 基础样式：背景色、文字颜色、边框、圆角、内边距
-      'inline-flex items-center justify-center px-3 py-1',
+      'flex items-center justify-center',
+      'inline-flex items-center justify-center px-0 py-1',
       'font-medium text-sm', // 默认字体大小和粗细
       'rounded-full',        // 圆角
       'transition-all duration-200 ease-in-out', // 悬停动画
@@ -30,6 +31,7 @@
     ]"
     v-bind="$attrs"
   >
+
     <!-- 文本内容 -->
     <span>{{ text }}</span>
   </div>
@@ -97,7 +99,7 @@ const props = defineProps({
    */
   hoverEffect: {
     type: String,
-    default: 'hover:opacity-90 hover:shadow-md'
+    default: ''
   },
   /**
    * 鼠标悬停效果类名（Tailwind）

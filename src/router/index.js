@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+const index = () => import('@/views/index/index.vue')
 const routes = [
     {
       path: '/',
       name: 'index',
-      component: () => import('@/views/index.vue')
+      component: index,
     },
 ]
 
