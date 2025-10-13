@@ -10,7 +10,7 @@
     class="flex flex-col items-center justify-center"
     :class="[
       // 默认尺寸（可被父组件 class 覆盖）
-      'w-30 h-16',
+      ,
       // 默认内边距和间距（美观且可覆盖）
       'p-0 gap-0',
       // 允许父组件传入 class 控制大小、位置、间距等

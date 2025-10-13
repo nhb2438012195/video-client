@@ -1,7 +1,7 @@
 <template>
     <div>
-        <BaseContainer class=" cursor-pointer bg-[#ededed] rounded-lg w-[72px] h-[31px] hover:bg-[#cbcbcb]">
-             <ButtonLabel class=" text-slate-600  text-[14px] hover:text-black w-[72px] h-[31px]" bgColor="" hoverEffect=""  :text=text></ButtonLabel>
+        <BaseContainer class="  cursor-pointer bg-[#ededed] rounded-lg hover:bg-[#cbcbcb] aspect-[20/9] ">
+             <ButtonLabel class=" text-slate-600  text-[14px] hover:text-black " bgColor="" hoverEffect=""  :text=text></ButtonLabel>
         </BaseContainer>
     </div>
 </template>

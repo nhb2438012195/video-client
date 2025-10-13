@@ -1,6 +1,6 @@
 <template>
     <div>
-            <BaseContainer class=" cursor-pointer rounded-lg w-[72px] h-[31px] ">
+            <BaseContainer class=" cursor-pointer rounded-lg  aspect-[10/4]">
                 <ButtonLabel class=" text-slate-600  text-[14px] hover:text-blue-500" bgColor="" hoverEffect="" :text="text"></ButtonLabel>
                     <template #left >
                         <el-icon class="mr-[4px] !text-black">

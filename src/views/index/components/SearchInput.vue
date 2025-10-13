@@ -12,7 +12,7 @@
     class="relative inline-block"
     :class="[
       // 默认尺寸（可被父组件 class 覆盖）
-      'w-[500px]',
+      'w-full',
       // 允许父组件传入 class
       $attrs.class || ''
     ]"

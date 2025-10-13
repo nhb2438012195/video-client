@@ -16,7 +16,6 @@
       'rounded-full',        // 圆角
       'transition-all duration-200 ease-in-out', // 悬停动画
       'cursor-default',       // 鼠标样式
-      'shadow-sm',            // 微弱阴影提升立体感
       'select-none' ,           // 禁止文本选择
       // 可自定义的类名（由父组件传入）
       customClass,
