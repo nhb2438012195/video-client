@@ -7,7 +7,7 @@
     - 默认有合理宽高，但可被父组件 class 覆盖
   -->
   <div
-    class="flex flex-col items-center justify-center"
+    class="flex flex-col items-center justify-center select-none"
     :class="[
       // 默认尺寸（可被父组件 class 覆盖）
       ,

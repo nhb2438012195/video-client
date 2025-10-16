@@ -1,7 +1,7 @@
 <template>
   <!-- 视频卡片组件 -->
   <div
-    class="h-full w-full relative flex gap-2 flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden transition-colors duration-150"
+    class="!z-0 h-full w-full relative flex gap-2 flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden transition-colors duration-150"
     :class="customClass"
   >
     <!-- 封面区域：包含视频缩略图、播放按钮、播放量、时长、功能图标 -->
@@ -39,15 +39,15 @@
     </div>
 
     <!-- 标题与作者区域 -->
-    <div class="">
+    <div class="overflow-hidden">
       <!-- 标题 -->
       <h3
-        class="text-xs font-semibold text-gray-900 mb-2 leading-tight max-h-[40px]"
+        class="text-xs font-semibold text-gray-900 mb-2 leading-tight max-h-[40px] overflow-hidden"
         @mouseenter="handleTitleMouseEnter"
         @mouseleave="handleTitleMouseLeave"
       >
-        <slot name="title">
-            <h3 class=" text-sm">
+        <slot name="title overflow-hidden">
+            <h3 class=" text-sm overflow-hidden">
                 当你发现《大东北我的家乡》和Alan Walker的适配度是100%……addawdaddddddddddddddddd
             </h3>
         </slot>
