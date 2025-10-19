@@ -15,7 +15,7 @@ service.interceptors.request.use(
     // 可以在这里添加 token、loading 等
     //从配置中获取token名称
     const token_name=process.env.VUE_APP_TOKEN_NAME
-    const token = Cookies.get(token_name) || '没有token'
+    const token = Cookies.get(token_name) || 'notoken'
     if (token) {
       config.headers[token_name] = `${token}`
     }

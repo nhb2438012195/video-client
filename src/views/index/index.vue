@@ -135,7 +135,7 @@
                                 <template #left>
                                     <el-icon
                                         class="border-[2px] border-white overflow-hidden rounded-full !w-[40px] !h-[38px] !text-white">
-                                        <img :src="userimg"></img>
+                                        <img :src="dynamicimg"></img>
                                     </el-icon>
                                 </template>
                             </BaseContainer>
@@ -429,7 +429,7 @@
                         <div
                             class="flex justify-center items-center !h-full 2xl:gap-4 xl:gap-3 gap-2 lg:min-w-[400px] sm:min-w-[300px]">
                             <!-- 头像 -->
-                            <ProfilePic class="z-45" :userimg="userimg"></ProfilePic>
+                            <ProfilePic class="z-45"></ProfilePic>
                             <!-- 头像 -->
                             <div class="">
                                 <BaseContainer class=" cursor-pointer" @click="clickTag()">
@@ -840,11 +840,11 @@
                             <!-- 内容区域（可放图片、标题等） -->
                         </div>
                         <!-- 小卡片：自动填充剩余位置 -->
-                        <div v-for="i in 60" :key="i"
-                            class="!z-0 aspect-[266.41/224.84] bg-slate-600 rounded-xl overflow-hidden shadow-md">
-                            <VideoCard>
+                        <div v-for="card in VideoCardStore.DynamicVideoCard" :key="card.id" :data="card"
+                            class="!z-0 aspect-[266.41/224.84] bg-slate-600 overflow-hidden ">
+                            <VideoCard :id="card.id">
                                 <template #cover>
-                                    <img class="h-full w-full" :src=dynamicimg></img>
+                                    <img class="h-full w-full object-fill" alt="avatar" :src=dynamicimg></img>
                                 </template>
                             </VideoCard>
                             <!-- 内容区域 -->
@@ -855,60 +855,139 @@
 
             </el-header>
             <!-- 主体 内容 -->
+            <BaseModal v-model="showNoLoginUser" class="" aria-labelledby="modal-title">
+                <div class="p-6 w-[820px]">
+                    <LoginPanel class="w-[400px]" @login="onPasswordLogin" @sms-login="onSmsLogin" @get-code="onGetCode"
+                        @forgot-password="onForgot" @register="onRegister" />
+                </div>
+            </BaseModal>
         </el-container>
     </div>
 </template>
 
-<script>
-import ButtonLabel from "@/views/components/ButtonLabel.vue"
-import SearchInput from "@/views/index/children/SearchInput.vue"
-import BaseContainer from "@/views/components/BaseContainer.vue"
-import BaseFlexDiv from "@/views/components/BaseFlexDiv.vue"
-import CategoryButton from "@/views/index/children/CategoryButton.vue"
-import CategoryButton2 from "@/views/index/children/CategoryButton2.vue"
-import VideoCard from "@/views/components/VideoCard.vue"
-import ProfilePic from "@/views/components/ProfilePic/ProfilePic.vue"
-export default {
-    components: {
-        ButtonLabel, BaseContainer, SearchInput, BaseFlexDiv, CategoryButton, CategoryButton2, VideoCard, ProfilePic,
-    },
-    data() {
-        return {
-            // 是否是固钉导航栏
-            isFixHeaderBar: false,
-            // 搜索框内容
-            query: '',
-            // 用户头像
-            //userimg: "/sleeve_200000027.png",
-            userimg: "",
-            bgimg: "/123cec01a7bde68ab530f773ed179c4f.png",
+<script setup>
 
-            //动态头像
-            dynamicimg: "/sleeve_200000027.png",
+import { ref, computed, onMounted, watch } from 'vue';
+import { useUserStore ,useVideoCardStore} from '@/store';
+import { ElMessage } from 'element-plus'; // 如果你用的是 Element Plus
+import { v4 as uuidv4 } from 'uuid'
+// 组件导入（自动注册）
+import ButtonLabel from '@/views/components/ButtonLabel.vue';
+import SearchInput from './children/SearchInput.vue'; // 注意：修复了双斜杠
+import BaseContainer from '@/views/components/BaseContainer.vue';
+import BaseFlexDiv from '@/views/components/BaseFlexDiv.vue';
+import CategoryButton from './children/CategoryButton.vue';
+import CategoryButton2 from './children/CategoryButton2.vue';
+import VideoCard from '@/views/components/VideoCard/VideoCard.vue';
+import ProfilePic from '@/views/components/ProfilePic/ProfilePic.vue';
+import BaseModal from '@/views/components/BaseModal.vue';
+import LoginPanel from './children/LoginPanel.vue';
 
-        }
-    },
-    methods: {
-        clickTag() {
-            console.log("hello world")
-        }
-        ,
-        onSearch(val) {
-            console.log('搜索:', val)
-        },
-        onDropdownToggle(isOpen) {
-            console.log('下拉状态:', isOpen)
-            // 父组件可据此做其他逻辑（如加载建议数据）
-        }
-    },
-    mounted() {
-
-    },
-    created() {
-
+//==== 状态管理器 ======
+const userStore = useUserStore();
+const VideoCardStore = useVideoCardStore();
+// ====== 响应式状态 ======
+const isFixHeaderBar = ref(false);
+const query = ref('');
+const bgimg = ref('/123cec01a7bde68ab530f773ed179c4f.png');
+const dynamicimg = ref('http://120.26.137.2:9000/public/DefaultImage.png');
+// ====== 计算属性 ======
+const showNoLoginUser = computed({
+    get: () => userStore.showNoLoginUser,
+    set: (value) => {
+        console.log('设置 showLogin:', value);
+        userStore.setShowNoLoginUser(value);
     }
+});
 
+// ====== 方法 ======
+// 初始化动态组件
+function InitDynamicVideoCard() {
+    // 创建11个视频卡片
+    createVideoCards(11)
 }
+//监听动态组件生成
+watch(() => userStore.isGenerateNewVideoCard, (newValue) => {
+    if (newValue) {
+        // 创建10个视频卡片
+        createVideoCards(10)
+        // 重置标志位
+        VideoCardStore.resetGenerateFlag()
+    }
+})
+
+//创建指定数量的视频卡片
+function createVideoCards(count) {
+    for (let i = 0; i < count; i++) {
+        VideoCardStore.DynamicVideoCard.push({
+            // 唯一标识符（仅用于该网页）
+            id: uuidv4(),
+            //创建时间
+            createTime: Date.now(),
+            //是否完成资源获取
+            // 可以添加其他 props，如 title、src 等
+            
+        })
+    }
+}
+function clickTag() {
+    console.log('hello world');
+}
+
+function onSearch(val) {
+    console.log('搜索:', val);
+}
+
+function onDropdownToggle(isOpen) {
+    console.log('下拉状态:', isOpen);
+}
+
+function onPasswordLogin(account, password) {
+    userStore
+        .login({ username: account, password: password })
+        .then(() => {
+            ElMessage.success('登录成功！');
+            showNoLoginUser.value = false; // 注意：computed 的 setter 会触发
+        })
+        .catch((e) => {
+            ElMessage.error(e.message);
+        });
+}
+
+function onSmsLogin({ phone, code }) {
+    console.log('短信登录/注册', phone, code);
+}
+
+function onGetCode({ phone }) {
+    console.log('获取验证码', phone);
+}
+
+function onForgot() {
+    console.log('忘记密码');
+}
+
+function onRegister(account, password) {
+    userStore
+        .register({ username: account, password: password })
+        .then(() => {
+            ElMessage.success('注册成功！');
+            showNoLoginUser.value = false;
+        })
+        .catch((e) => {
+            ElMessage.error(e.message);
+        });
+}
+
+// ====== 生命周期钩子 ======
+onMounted(() => {
+    // 如果需要初始化逻辑，放在这里
+    // 例如：监听滚动、初始化第三方库等
+    InitDynamicVideoCard()
+});
+
+// ====== 暴露给模板使用的变量/方法 ======
+// 在 <script setup> 中，所有顶层声明的变量/函数**自动暴露给模板**
+// 无需 return！
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,103 +1,99 @@
-<!-- <template>
-    <div>
-        <BaseContainer class="">
-            <template #left>
-                <div
-                    class=" flex items-center justify-center border-[2px] border-white overflow-hidden rounded-full !w-[40px] !h-[38px] !text-white">
-                    <img v-if="userimg!=''" :src="userimg"></img>
-                    <div v-else class="flex items-center justify-center h-full w-full text-sm bg-[#00AEEC]">
-                        <div class="text-sm">
-                            登录
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </BaseContainer>
-    </div>
-</template>
-
-<script>
-import BaseContainer from "@/views/components/BaseContainer.vue"
-export default {
-    components: { BaseContainer },
-    props: {
-        userimg: {
-            type: String,
-            default() {
-                return ''
-            }
-        }
-    },
-    data() {
-        return {}
-    },
-    methods: {},
-    mounted() { },
-    created() { },
-
-}
-</script>
-
-<style lang="scss" scoped></style> -->
-
+<!-- 头像组件 -->
 <template>
-  <div class="relative  flex items-center justify-center" @mouseenter="show = true" @mouseleave="show = false">
+  <div class="relative  flex items-center justify-center " @mouseenter="show = true" @mouseleave="show = false">
     <!-- 头像触发区域 -->
-    <BaseContainer>
-      <template #left>
-        <div
-          class="flex items-center justify-center border-[2px] border-white overflow-hidden rounded-full w-[40px] h-[38px] text-white cursor-pointer"
-        >
-          <img v-if="userimg" :src="userimg" alt="avatar" class="w-full h-full object-cover" />
-          <div v-else class="flex items-center justify-center w-full h-full text-sm bg-[#00AEEC]">
-            登录
+    <HoverZoom :scale="2" :offset-x="1" :offset-y="-1" :disabled="userimg!=''" :forceHover="showUser" class="z-50">
+      <BaseContainer>
+        <template #left>
+          <div
+            class="flex items-center justify-center border-white overflow-hidden rounded-full w-[40px] h-[38px] text-white cursor-pointer"
+            :class="{ 'border-[2px]': userimg != '' }">
+            <img v-if="userimg!=''" :src="userimg" alt="avatar" class="w-full h-full object-cover" />
+            <div v-if="!userStore.isLogin" class="flex items-center justify-center w-full h-full text-sm bg-[#00AEEC]">
+              登录
+            </div>
           </div>
-        </div>
-      </template>
-    </BaseContainer>
-
-    <!-- 使用 Transition 包裹下拉框 -->
-    <Transition
-      enter-active-class="transition-all duration-200 ease-out"
-      enter-from-class="opacity-0 -translate-y-2"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition-all duration-150 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-2"
-    >
-      <div
-        v-show="show"
-        class="absolute  top-full   z-50 pt-1"
-      >
-      <div class="bg-white border border-gray-200 rounded-md shadow-lg">
-            <slot>
-                <div class="w-[120px] h-[120px] px-2 py-2 text-sm text-gray-700">未登录a</div>
-            </slot>
-      </div>
-      </div>
-    </Transition>
+        </template>
+      </BaseContainer>
+    </HoverZoom>
+    <BaseDropdownPanel :show="show">
+      <NotLogin @login="login" @register="login"></NotLogin>
+    </BaseDropdownPanel>
+    <BaseDropdownPanel :show="showUser" class="z-49 mr-[40px]">
+      <Login class="w-[300px] pt-[40px] " :userData="userStore.userInfo"></Login>
+    </BaseDropdownPanel>
   </div>
 </template>
 
-<script>
-import BaseContainer from "@/views/components/BaseContainer.vue";
+<script setup>
+import { useUserStore } from '@/store';
+import BaseContainer from '@/views/components/BaseContainer.vue';
+import NotLogin from './children/NotLogin.vue';
+import BaseDropdownPanel from '@/views/components/BaseDropdownPanel.vue';
+import Login from './children/Login.vue';
+import { watch, computed, onMounted, ref } from 'vue';
+import HoverZoom from '@/views/components/HoverZoom.vue';
 
-export default {
-  name: "ProfilePicWithDropdown",
-  components: { BaseContainer },
-  props: {
-    userimg: {
-      type: String,
-      default: ""
-    }
-  },
-  data() {
-    return {
-      show: false
-    };
+const userStore = useUserStore();
+let userimg = ref('')
+function init() {
+  userStore.getUserInfo();
+}
+
+function reset() {
+  console.log('reset用户头像');
+}
+function login() {
+  console.log('login');
+  userStore.setShowNoLoginUser(true);
+}
+// 监听登录状态,显示不同的下拉面板
+const show = computed({
+  get: () => userStore.showLogin,
+  set: (val) => {
+    userStore.setShowLogin(val)
   }
-};
+});
+const showUser = computed(() => userStore.showUser)
+watch(
+  () => userStore.userInfo,
+  (newVal, oldVal) => {
+    console.log('用户信息变化:', oldVal, '->', newVal);
+    userimg.value = newVal?.avatar || '';
+    console.log('用户头像:', userimg);
+  },
+  { deep: true }
+);
+
+watch(
+  () => userStore.isLogin,
+  (newVal, oldVal) => {
+    console.log('登录状态变化:', oldVal, '->', newVal);
+    if (newVal) {
+      console.log('用户已登录');
+      init();
+    } else {
+      console.log('用户未登录');
+      reset();
+    }
+  }
+);
+
+onMounted(() => {
+  if (userStore.isLogin) {
+    console.log('用户已登录');
+    init();
+  } else {
+    console.log('用户未登录');
+  }
+});
+
+
+
+// 注意：<script setup> 中顶层声明的变量/函数会自动暴露给模板
+// 无需 return！
 </script>
+
 
 <style scoped>
 img {
