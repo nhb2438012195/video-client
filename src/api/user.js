@@ -2,21 +2,21 @@ import request from '@/utils/request'
 //登录
 export function login(data) {
   return request({
-    url: '/login',
+    url: '/user/login',
     method: 'post',
     data
   })
 }
 export function register(data){
     return request({
-        url:'/register',
+        url:'/user/register',
         method:'post',
         data
     })
 }
 export function getUserInfo(){
   return request({
-    url:'/userInfo',
+    url:'/user/userInfo',
     method:'get'
   })
 }

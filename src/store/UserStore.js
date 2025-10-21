@@ -20,6 +20,12 @@ export const useUserStore = defineStore('user', {
           this.userInfo = res.data
           console.log(this.userInfo)
         })
+        .catch(err => {
+          console.log('获取用户信息失败')
+          console.log(err)
+          removeCookie(process.env.VUE_APP_TOKEN_NAME || 'token')
+          throw new Error(err)
+        })
     },
     async login(data) {
       await login(data)

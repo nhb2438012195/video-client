@@ -10,7 +10,7 @@
   <div
     :class="[
       // 基础样式：背景色、文字颜色、边框、圆角、内边距
-      'flex items-center justify-center',
+      'flex items-center justify-center relative',
       'inline-flex items-center justify-center px-0 py-1',
       'font-medium text-sm', // 默认字体大小和粗细
       'rounded-full',        // 圆角
@@ -21,7 +21,6 @@
       customClass,
       // 背景色和文字色可通过 props 控制，也可覆盖
       bgColor,
-      textColor,
       borderColor,
       // 悬停效果
       hoverEffect,
@@ -68,14 +67,7 @@ const props = defineProps({
     type: String,
     default: 'bg-gray-200'
   },
-  /**
-   * 文字颜色类名（Tailwind）
-   * 示例：'text-gray-800', 'text-white'
-   */
-  textColor: {
-    type: String,
-    default: 'text-gray-800'
-  },
+
   /**
    * 边框颜色类名（Tailwind）
    * 示例：'border-gray-300', 'border-transparent'

@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/store';
+import { useUserStore,usePublicStore } from '@/store';
 import BaseContainer from '@/views/components/BaseContainer.vue';
 import NotLogin from './children/NotLogin.vue';
 import BaseDropdownPanel from '@/views/components/BaseDropdownPanel.vue';
@@ -34,6 +34,7 @@ import Login from './children/Login.vue';
 import { watch, computed, onMounted, ref } from 'vue';
 import HoverZoom from '@/views/components/HoverZoom.vue';
 
+const publicStore = usePublicStore();
 const userStore = useUserStore();
 let userimg = ref('')
 function init() {

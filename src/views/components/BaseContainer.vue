@@ -33,7 +33,7 @@
 
       <!-- 默认内容（主内容） -->
       <div
-        class="flex items-center justify-center text-gray-800 font-medium text-sm   min-w-0"
+        class="flex items-center justify-center  font-medium text-sm   min-w-0"
         :class="[
           // hover 反馈（可选）
         ]"

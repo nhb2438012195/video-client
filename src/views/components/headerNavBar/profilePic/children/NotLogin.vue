@@ -2,8 +2,7 @@
 <template>
   <!-- 外层容器，允许父组件通过 class 控制位置和大小 -->
   <div
-    :class="customClass"
-    class="relative w-[359px] h-[235px] bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden flex flex-col justify-between p-[20px] transition-all duration-200 ease-in-out"
+    class="  relative w-[359px] h-[235px] bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden flex flex-col justify-between p-[20px] transition-all duration-200 ease-in-out"
   >
     <!-- 标题区域 -->
     <div class="text-sm font-medium text-gray-800 mb-4">
@@ -79,10 +78,7 @@ export default {
      * 允许父组件通过 class 自定义样式（如位置、大小）
      * 示例：class="absolute top-10 right-10" 或 "w-96 h-60"
      */
-    customClass: {
-      type: String,
-      default: ''
-    }
+
   },
   setup() {
     // 无状态逻辑，所有交互通过 emit 传递

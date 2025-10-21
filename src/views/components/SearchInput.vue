@@ -9,7 +9,7 @@
   -->
   <div
     ref="rootRef"
-    class="relative inline-block !z-50"
+    class="relative inline-block !z-47"
     :class="[
       // 默认尺寸（可被父组件 class 覆盖）
       'w-full',
@@ -45,7 +45,7 @@
     <div
       v-show="isDropdownVisible"
       ref="dropdownRef"
-      class="absolute  z-49 w-full bg-white rounded-md shadow-lg"
+      class="absolute  z-46 w-full bg-white rounded-md shadow-lg"
     >
       <slot name="dropdown" />
     </div>

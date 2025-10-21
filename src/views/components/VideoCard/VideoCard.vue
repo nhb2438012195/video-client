@@ -1,15 +1,14 @@
 <template>
   <!-- 视频卡片组件 -->
-  <div class="!z-0 h-full w-full relative flex gap-2 flex-col bg-white overflow-hidden transition-colors duration-150">
+  <div class="z-0 h-full w-full relative flex gap-2 flex-col bg-white overflow-hidden transition-colors duration-150 ">
     <!-- 封面区域：包含视频缩略图、播放按钮、播放量、时长、功能图标 -->
-    <div ref="coverRef"  class="relative aspect-video cursor-pointer bg-gray-800 flex items-center justify-center overflow-hidden"
+    <div 
+      class="relative aspect-video cursor-pointer bg-gray-800 flex items-center justify-center overflow-hidden"
       @mousemove="handleCoverMouseMove" @mouseenter="handleCoverMouseEnter" @mouseleave="handleCoverMouseLeave"
       @click="handleCoverClick">
       <!-- 插槽：封面图片 -->
-      <slot name="cover">
-        <!-- 默认占位图 -->
-        <img src="http://120.26.137.2:9000/public/DefaultImage.png" alt="视频封面" class="w-full h-full object-fill" />
-      </slot>
+      <!-- 默认占位图 -->
+      <img :src="videoCardInfo.videoCover" alt="视频封面" class="w-full h-full object-fill" />
       <!-- 播放按钮图标（左下角） -->
       <!-- <div class="absolute bottom-4 left-4 flex items-center justify-center w-8 h-8 bg-black bg-opacity-70 rounded-full text-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
@@ -17,33 +16,35 @@
         </svg>
       </div> -->
       <!-- 封面底部 -->
-      <div class=" absolute bottom-0 flex  justify-between items-center bg-black w-full">
+      <div class="absolute bottom-0 flex justify-between items-center w-full
+            bg-gradient-to-t from-black/70 to-transparent h-[40px] p-1">
         <!-- 播放次数（左下角） -->
-        <div class=" bottom-4 left-4 bg-opacity-70 text-white px-2 py-1  text-sm font-medium">
-          <slot name="view-count">622</slot>
+        <div class="  left-4 bg-opacity-70 text-white px-2   text-sm font-medium">
+          <div>
+            <span class="text-xs">{{ videoCardInfo.videoPlayVolume }}</span>
+            <span class="text-xs ml-1">{{ videoCardInfo.videoBarrageVolume }}</span>
+          </div>
         </div>
 
         <!-- 时长（右下角） -->
-        <div class=" top-4 right-4 bg-black bg-opacity-70 text-white px-2 py-1  text-xs font-medium">
-          <slot name="duration">01:20:26</slot>
+        <div class=" right-4  bg-opacity-70 text-white px-2   text-xs font-medium">
+          <div name="duration">{{ videoCardInfo.videoLength }}</div>
         </div>
       </div>
       <!-- 功能图标占位（收藏、分享） -->
-      <div class="absolute top-4 left-4 flex space-x-1">
+      <div class="absolute left-4 flex space-x-1">
       </div>
     </div>
 
     <!-- 标题与作者区域 -->
     <div class="overflow-hidden">
       <!-- 标题 -->
-      <h3
-        class="text-xs font-semibold text-gray-900 mb-2 leading-tight max-h-[40px] overflow-hidden cursor-pointer hover:text-blue-600">
-        <slot name="title overflow-hidden">
-          <h3 class=" text-sm overflow-hidden">
-            当你发现《大东北我的家乡》和Alan Walker的适配度是100%……addawdaddddddddddddddddd
-          </h3>
-        </slot>
-      </h3>
+      <div
+        class="text-xs font-semibold text-gray-900  leading-tight h-[40px] overflow-hidden  ">
+          <span class=" text-sm overflow-hidden cursor-pointer hover:text-blue-600">
+            {{ videoCardInfo.videoTitle }}
+          </span>
+      </div>
 
       <!-- 作者信息 -->
       <div class="flex items-center mt-1 text-sm text-gray-600">
@@ -58,11 +59,11 @@
         </div>
         <div class="cursor-pointer hover:text-blue-600 text-gray-400">
           <span class="font-medium  ">
-            <slot name="author">hiAgent</slot>
+            <slot name="author">{{ videoCardInfo.videoAuthor }}</slot>
           </span>
           <span class="mx-1.5 ">·</span>
           <span class="">
-            <slot name="date">10-9</slot>
+            <slot name="date">{{ videoCardInfo.createTime }}</slot>
           </span>
         </div>
 
@@ -72,18 +73,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useVideoCardStore,usePublicStore } from '@/store';
+// 引入store
+const videoCard = useVideoCardStore()
+const publicStore = usePublicStore()
+
+//卡片是否加载完成
+const isLoaded = ref(false);
+const videoCardInfo = ref({
+  videoCover: '',
+  videoTitle: '',
+  videoAuthor: '',
+  videoLength: '',
+  videoPlayVolume: '',
+  createTime: '',
+  videoBarrageVolume: '',
+})
 // ========================
-// === Props 接收外部数据 ===
-// ========================
-const coverRef = ref(null);
+
 const props = defineProps({
   //id
   id: {
     type: String,
     required: true,
   },
-
 })
 
 
@@ -91,6 +105,49 @@ const props = defineProps({
 // === 事件处理函数 ===
 // ========================
 
+let unwatchPreload = null
+
+unwatchPreload = watch(
+  () => videoCard.isPreloadNotReady,
+  (newVal) => {
+    // 只处理未加载且预加载已完成的情况
+    if (!isLoaded.value && newVal === false) {
+      const info = videoCard.getCardInfo()
+      if (info) {
+        videoCardInfo.value = info
+        handleCoverLoaded()
+
+        // ✅ 一次性取消监听（只调用一次）
+        unwatchPreload?.()
+        unwatchPreload = null
+      }
+    }
+  },
+  { immediate: true } // 建议加上，避免错过已就绪状态
+)
+
+
+// 鼠标进入封面
+function handleCoverMouseEnter() {
+  console.log('进入封面')
+}
+
+// 鼠标离开封面
+function handleCoverMouseLeave() {
+  console.log('离开封面')
+
+}
+//卡片加载完成
+function handleCoverLoaded() {
+  console.log('卡片加载完成')
+  isLoaded.value = true
+  videoCard.videoCardLoaded(props.id)
+}
+// 生命周期
+onMounted(() => {
+  //暂时默认已经加载完成
+  //handleCoverLoaded()
+})
 // 鼠标在封面移动时触发（暂时不需要）
 function handleCoverMouseMove(e) {
   // const cover = coverRef.value;
@@ -103,20 +160,6 @@ function handleCoverMouseMove(e) {
   // // ...后续逻辑
   // console.log('percent:', percent+'%')
 }
-
-// 鼠标进入封面
-function handleCoverMouseEnter() {
-  console.log('进入封面')
-
-}
-
-// 鼠标离开封面
-function handleCoverMouseLeave() {
-  console.log('离开封面')
-
-}
-
-
 </script>
 
 <style scoped>
