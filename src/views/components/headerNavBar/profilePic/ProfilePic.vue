@@ -19,7 +19,7 @@
     <BaseDropdownPanel :show="show">
       <NotLogin @login="login" @register="login"></NotLogin>
     </BaseDropdownPanel>
-    <BaseDropdownPanel :show="showUser" class="z-49 mr-[40px]">
+    <BaseDropdownPanel :show="showUser" class="z-49 mr-[40px] ">
       <Login class="w-[300px] pt-[40px] " :userData="userStore.userInfo"></Login>
     </BaseDropdownPanel>
   </div>

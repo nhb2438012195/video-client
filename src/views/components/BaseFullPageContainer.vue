@@ -1,7 +1,8 @@
 <template>
+           <CustomScrollbar></CustomScrollbar>
   <div class="h-screen  relative  max-w-[2000px] mx-auto m-[0px]">
     <div v-if="hasHeader1Slot()" class="z-50 relative  min-w-[1060px]">
-    <slot name="header1"></slot>
+      <slot name="header1"></slot>
     </div>
     <div v-if="hasHeader2Slot()"
       class="z-0 relative flex items-center justify-between min-w-[1020px] !aspect-[11.766] !p-[0px] !w-[83.451536643%]  mx-auto ">
@@ -10,13 +11,19 @@
     <div v-if="hasMainSlot()" class="z-0 relative min-w-[1020px] !h-full  !p-[0px]  !w-[83.451536643%] mx-auto">
       <slot name="main"></slot>
     </div>
+    <div v-if="hasMainLeftSlot()">
+      <slot name="mainLeft"></slot>
+    </div>
+    <div v-if="hasMainRightSlot()">
+      <slot name="mainRight"></slot>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, useSlots } from 'vue'
 import { usePublicStore } from '@/store';
-
+import CustomScrollbar from '@/views/components/CustomScrollbar.vue';
 const slots = useSlots()
 
 
@@ -31,6 +38,10 @@ const hasHeader1Slot = () => !!slots.header1
 const hasHeader2Slot = () => !!slots.header2
 //判断是否传入了名为 "main" 的插槽
 const hasMainSlot = () => !!slots.main
+//判断是否传入了名为 "main-left" 的插槽
+const hasMainLeftSlot = () => !!slots.mainLeft
+//判断是否传入了名为 "main-right" 的插槽
+const hasMainRightSlot = () => !!slots.mainRight
 //方法
 
 //生命周期

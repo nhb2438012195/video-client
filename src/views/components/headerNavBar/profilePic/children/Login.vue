@@ -1,6 +1,6 @@
 <template>
     <!-- 用户面板容器 -->
-    <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden transition-all duration-300"
+    <div class="  bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden transition-all duration-300"
         :class="[customClass]" @click.stop>
         <!-- 头部区域：用户ID和等级 -->
         <div class="px-4 py-3 text-center ">

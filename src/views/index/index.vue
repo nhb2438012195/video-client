@@ -1,24 +1,17 @@
 <template>
     <div>
-
-
-
         <!-- 粘性头部导航栏 -->
         <div v-show="isFixHeaderBar"
             class=" max-w-full mx-auto fixed z-[51]   !px-[24px] bg-indigo-400  !w-full top-0 !h-[64px]">
-
             <div ref="areaB"></div>
         </div>
         <!-- 粘性头部导航栏 -->
-
         <BaseFullPageContainer>
             <!-- 头部 导航栏 -->
             <template #header1>
                 <div class="  !h-[155px]  flex flex-col justify-between  bg-cover bg-center "
                     :style="{ backgroundImage: 'url(' + bgimg + ')' }">
-
                     <div ref="areaA"></div>
-
                 </div>
             </template>
             <!-- 头部 导航栏 -->
@@ -233,37 +226,29 @@
 
             <!-- 主体 内容 -->
             <template #main>
-                
-
-
-                    <div class="w-full max-w-full mx-auto   ">
-                        <!-- 响应式网格容器 -->
-                        <div class="grid  grid-cols-4  md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-                            <!-- 大卡片：占据 2 列 2 行（在 lg 及以上） -->
-                            <div
-                                class="col-span-2 row-span-2 aspect-[552.79/394.69] bg-slate-600 rounded-xl overflow-hidden shadow-md">
-                                <!-- 内容区域（可放图片、标题等） -->
-                            </div>
-                            <!-- 小卡片：自动填充剩余位置 -->
-                            <div v-for="card in videoCardStore.DynamicVideoCard" :key="card.id" :data="card"
-                                class="!z-0 aspect-[266.41/224.84] bg-slate-600 overflow-hidden rounded-lg">
-                                <VideoCard :id="card.id">
-                                </VideoCard>
-                                <!-- 内容区域 -->
-                            </div>
+                <div class="w-full max-w-full mx-auto   ">
+                    <!-- 响应式网格容器 -->
+                    <div class="grid  grid-cols-4  md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+                        <!-- 大卡片 -->
+                        <div
+                            class="col-span-2 row-span-2 aspect-[552.79/394.69] bg-slate-600 rounded-xl overflow-hidden shadow-md">
+                            <!-- 内容区域（可放图片、标题等） -->
+                        </div>
+                        <!-- 小卡片-->
+                        <div v-for="card in videoCardStore.DynamicVideoCard" :key="card.id" :data="card"
+                            class="!z-0 aspect-[266.41/224.84] bg-slate-600 overflow-hidden rounded-lg">
+                            <VideoCard :id="card.id">
+                            </VideoCard>
                         </div>
                     </div>
-
-
-                
+                </div>
             </template>
             <!-- 主体 内容 -->
-
 
         </BaseFullPageContainer>
         <!-- 可移动的导航栏 -->
         <Teleport v-if="targetElement" :to="targetElement">
-                <HeaderNavBar class="text-white" />
+            <HeaderNavBar class="text-white" />
         </Teleport>
         <!-- 可移动的导航栏 -->
         <!-- 弹窗 -->
@@ -276,7 +261,6 @@
         <!-- 弹窗 -->
     </div>
 </template>
-
 <script setup>
 
 import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue';
@@ -414,4 +398,4 @@ onBeforeUnmount(() => {
 // 无需 return！
 </script>
 
-<style lang="scss" scoped></style>
+<style></style>
