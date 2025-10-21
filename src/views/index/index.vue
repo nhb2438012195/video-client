@@ -1,31 +1,31 @@
 <template>
     <div>
-        <!-- 关键：只在目标存在时 Teleport -->
-        <Teleport v-if="targetElement" :to="targetElement">
-            <div class="!px-[24px] top-0 !h-[64px]">
-                <HeaderNavBar class="text-white" />
-            </div>
-        </Teleport>
+
+
 
         <!-- 粘性头部导航栏 -->
         <div v-show="isFixHeaderBar"
             class=" max-w-full mx-auto fixed z-[51]   !px-[24px] bg-indigo-400  !w-full top-0 !h-[64px]">
+
             <div ref="areaB"></div>
         </div>
         <!-- 粘性头部导航栏 -->
-        <div class="h-screen  relative  max-w-[2000px] mx-auto m-[0px]">
-            <!-- 头部 导航栏 -->
-            <div class=" z-50 relative !h-[155px]  flex flex-col justify-between  bg-cover bg-center  min-w-[1060px]"
-                :style="{ backgroundImage: 'url(' + bgimg + ')' }">
-                <div ref="areaA"></div>
-            </div>
 
+        <BaseFullPageContainer>
+            <!-- 头部 导航栏 -->
+            <template #header1>
+                <div class="  !h-[155px]  flex flex-col justify-between  bg-cover bg-center "
+                    :style="{ backgroundImage: 'url(' + bgimg + ')' }">
+
+                    <div ref="areaA"></div>
+
+                </div>
+            </template>
             <!-- 头部 导航栏 -->
 
             <!-- 中间 分类 -->
-            <!-- <template #header2> -->
-            <div
-                class="z-0 relative flex items-center justify-between min-w-[1020px] !aspect-[11.766] !p-[0px] !w-[83.451536643%]  mx-auto ">
+            <template #header2>
+
                 <!-- 动态热门 -->
                 <BaseFlexDiv class="w-[10%] grid-cols-2 2xl:gap-6 xl:gap-4 gap-2 ml-3">
                     <div class="">
@@ -227,49 +227,53 @@
                     <!-- 内容区域 -->
                 </div>
                 <!-- 右侧分类 -->
-            </div>
-            <!-- </template> -->
+
+            </template>
             <!-- 中间 分类 -->
 
             <!-- 主体 内容 -->
-            <!-- <template #main> -->
-            <div class="z-0 relative min-w-[1020px] !h-full  !p-[0px]  !w-[83.451536643%] mx-auto">
+            <template #main>
+                
 
 
-                <div class="w-full max-w-full mx-auto   ">
-                    <!-- 响应式网格容器 -->
-                    <div class="grid  grid-cols-4  md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-                        <!-- 大卡片：占据 2 列 2 行（在 lg 及以上） -->
-                        <div
-                            class="col-span-2 row-span-2 aspect-[552.79/394.69] bg-slate-600 rounded-xl overflow-hidden shadow-md">
-                            <!-- 内容区域（可放图片、标题等） -->
-                        </div>
-                        <!-- 小卡片：自动填充剩余位置 -->
-                        <div v-for="card in videoCardStore.DynamicVideoCard" :key="card.id" :data="card"
-                            class="!z-0 aspect-[266.41/224.84] bg-slate-600 overflow-hidden rounded-lg">
-                            <VideoCard :id="card.id">
-                            </VideoCard>
-                            <!-- 内容区域 -->
+                    <div class="w-full max-w-full mx-auto   ">
+                        <!-- 响应式网格容器 -->
+                        <div class="grid  grid-cols-4  md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+                            <!-- 大卡片：占据 2 列 2 行（在 lg 及以上） -->
+                            <div
+                                class="col-span-2 row-span-2 aspect-[552.79/394.69] bg-slate-600 rounded-xl overflow-hidden shadow-md">
+                                <!-- 内容区域（可放图片、标题等） -->
+                            </div>
+                            <!-- 小卡片：自动填充剩余位置 -->
+                            <div v-for="card in videoCardStore.DynamicVideoCard" :key="card.id" :data="card"
+                                class="!z-0 aspect-[266.41/224.84] bg-slate-600 overflow-hidden rounded-lg">
+                                <VideoCard :id="card.id">
+                                </VideoCard>
+                                <!-- 内容区域 -->
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
-            </div>
-            <!-- </template> -->
+                
+            </template>
             <!-- 主体 内容 -->
 
-            <!-- 弹窗 -->
-            <!-- <template #popup> -->
-            <BaseModal v-model="showNoLoginUser" class="" aria-labelledby="modal-title">
-                <div class="p-6 w-[820px] ">
-                    <LoginPanel class="w-[400px]" @login="onPasswordLogin" @sms-login="onSmsLogin" @get-code="onGetCode"
-                        @forgot-password="onForgot" @register="onRegister" />
-                </div>
-            </BaseModal>
-            <!-- </template> -->
-            <!-- 弹窗 -->
-        </div>
+
+        </BaseFullPageContainer>
+        <!-- 可移动的导航栏 -->
+        <Teleport v-if="targetElement" :to="targetElement">
+                <HeaderNavBar class="text-white" />
+        </Teleport>
+        <!-- 可移动的导航栏 -->
+        <!-- 弹窗 -->
+        <BaseModal v-model="showNoLoginUser" class="" aria-labelledby="modal-title">
+            <div class="p-6 w-[820px] ">
+                <LoginPanel class="w-[400px]" @login="onPasswordLogin" @sms-login="onSmsLogin" @get-code="onGetCode"
+                    @forgot-password="onForgot" @register="onRegister" />
+            </div>
+        </BaseModal>
+        <!-- 弹窗 -->
     </div>
 </template>
 

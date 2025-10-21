@@ -1,12 +1,10 @@
 <template>
   <div>
-        <div>
-            <!-- 导航栏 -->
-            <div class="w-full p-1  shadow-md">
-                <HeaderNavBar class="text-black"></HeaderNavBar>
-            </div>
-            <!-- 导航栏 -->
-        </div>
+        <BaseFullPageContainer>
+          <template #header1>
+            <HeaderNavBar class="text-black shadow"></HeaderNavBar>
+          </template>
+        </BaseFullPageContainer>
   </div>
 </template>
 
@@ -17,6 +15,7 @@ import { useRoute } from 'vue-router'
 
 // 组件导入
 import HeaderNavBar from '../headerNavBar/HeaderNavBar.vue';
+import BaseFullPageContainer from '@/views/components/BaseFullPageContainer.vue';
 //Store
 const publicStore = usePublicStore();
 //属性
