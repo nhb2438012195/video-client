@@ -251,14 +251,6 @@
             <HeaderNavBar class="text-white" />
         </Teleport>
         <!-- 可移动的导航栏 -->
-        <!-- 弹窗 -->
-        <BaseModal v-model="showNoLoginUser" class="" aria-labelledby="modal-title">
-            <div class="p-6 w-[820px] ">
-                <LoginPanel class="w-[400px]" @login="onPasswordLogin" @sms-login="onSmsLogin" @get-code="onGetCode"
-                    @forgot-password="onForgot" @register="onRegister" />
-            </div>
-        </BaseModal>
-        <!-- 弹窗 -->
     </div>
 </template>
 <script setup>
@@ -274,8 +266,6 @@ import BaseFlexDiv from '@/views/components/BaseFlexDiv.vue';
 import CategoryButton from './children/CategoryButton.vue';
 import CategoryButton2 from './children/CategoryButton2.vue';
 import VideoCard from '@/views/components/videoCard/VideoCard.vue';
-import BaseModal from '@/views/components/BaseModal.vue';
-import LoginPanel from './children/LoginPanel.vue';
 import HeaderNavBar from '@/views/components/headerNavBar/HeaderNavBar.vue';
 //Store
 const userStore = useUserStore();
@@ -285,13 +275,6 @@ const publicStore = usePublicStore();
 const isFixHeaderBar = ref(false);
 const bgimg = ref('/123cec01a7bde68ab530f773ed179c4f.png');
 const dynamicimg = ref('http://120.26.137.2:9000/public/DefaultImage.png');
-const showNoLoginUser = computed({
-    get: () => userStore.showNoLoginUser,
-    set: (value) => {
-        console.log('设置 showLogin:', value);
-        userStore.setShowNoLoginUser(value);
-    }
-});
 const areaA = ref(null)
 const areaB = ref(null)
 // ====== 方法 ======
@@ -345,41 +328,7 @@ function clickTag() {
     console.log('hello world');
 }
 
-function onPasswordLogin(account, password) {
-    userStore
-        .login({ username: account, password: password })
-        .then(() => {
-            ElMessage.success('登录成功！');
-            showNoLoginUser.value = false; // 注意：computed 的 setter 会触发
-        })
-        .catch((e) => {
-            ElMessage.error(e.message);
-        });
-}
 
-function onSmsLogin({ phone, code }) {
-    console.log('短信登录/注册', phone, code);
-}
-
-function onGetCode({ phone }) {
-    console.log('获取验证码', phone);
-}
-
-function onForgot() {
-    console.log('忘记密码');
-}
-
-function onRegister(account, password) {
-    userStore
-        .register({ username: account, password: password })
-        .then(() => {
-            ElMessage.success('注册成功！');
-            showNoLoginUser.value = false;
-        })
-        .catch((e) => {
-            ElMessage.error(e.message);
-        });
-}
 
 // ====== 生命周期钩子 ======
 onMounted(() => {

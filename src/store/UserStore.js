@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { setCookie, getCookie, removeCookie } from '@/utils/cookies'
-import { login, register, getUserInfo } from '@/api/user'
+import { postLogin, postRegister, getUserInfo } from '@/api/user'
 export const useUserStore = defineStore('user', {
   state: () => ({
     username: getCookie('userName') || '',
@@ -13,8 +13,8 @@ export const useUserStore = defineStore('user', {
     userInfo: {},
   }),
   actions: {
-    async getUserInfo() {
-      await getUserInfo()
+    getUserInfo() {
+      getUserInfo()
         .then(res => {
           console.log('获取用户信息成功')
           this.userInfo = res.data
@@ -27,8 +27,8 @@ export const useUserStore = defineStore('user', {
           throw new Error(err)
         })
     },
-    async login(data) {
-      await login(data)
+    login(data) {
+       postLogin(data)
         .then(res => {
           console.log('登录成功')
           console.log(res)
@@ -45,8 +45,8 @@ export const useUserStore = defineStore('user', {
         })
     }
     ,
-    async register(data) {
-      const response = await register(data)
+    register(data) {
+      postRegister(data)
         .then(res => {
           console.log('注册成功')
           console.log(res)
@@ -57,7 +57,6 @@ export const useUserStore = defineStore('user', {
           console.log(err)
           throw new Error(err)
         })
-      console.log(response)
     },
     //   //退出登录
     //  async logout() {

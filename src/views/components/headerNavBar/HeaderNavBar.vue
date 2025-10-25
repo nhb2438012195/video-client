@@ -1,6 +1,6 @@
 <template>
-    <div class="!px-[24px] top-0 !h-[64px]">
-        <div class="flex justify-between items-center !h-full 2xl:gap-3 lg:gap-2">
+    <div class="w-full !px-[24px] top-0 !h-[64px]">
+        <div class="w-full flex justify-between items-center !h-full 2xl:gap-3 lg:gap-2">
             <!-- 头部logo(首页不显示) -->
             <!-- 头部左边导航烂-->
             <div class=" min-w-[425px] flex justify-between items-center !h-full 2xl:gap-4 xl:gap-2 lg:gap-2 gap-1">
@@ -242,27 +242,7 @@
                     </BaseContainer>
                 </div>
                 <div class="">
-                    <BaseContainer class=" bg-[#fc8bab] cursor-pointer rounded-lg !h-[34px] p-3 " @Click="clickTag()">
-                        <ButtonLabel class="  text-[14px] !hidden lg:!block " bgColor="" hoverEffect="" text="投稿"
-                            @click="clickTag()"></ButtonLabel>
-                        <template #left>
-                            <el-icon class="!w-[30px] !">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="!w-[18px] !h-[18px] header-upload-entry__icon">
-                                    <path
-                                        d="M12.0824 10H14.1412C15.0508 10 15.7882 10.7374 15.7882 11.6471V12.8824C15.7882 13.792 15.0508 14.5294 14.1412 14.5294H3.84707C2.93743 14.5294 2.20001 13.792 2.20001 12.8824V11.6471C2.20001 10.7374 2.93743 10 3.84707 10H5.90589"
-                                        stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
-                                        stroke-linejoin="round"></path>
-                                    <path d="M8.99413 11.2353L8.99413 3.82353" stroke="currentColor" stroke-width="1.7"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M12.0823 6.29413L8.9941 3.20589L5.90587 6.29413" stroke="currentColor"
-                                        stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </el-icon>
-                        </template>
-                    </BaseContainer>
+                    <Contribute></Contribute>
                 </div>
             </div>
             <!--头部右边导航烂  -->
@@ -278,7 +258,8 @@ import { usePublicStore } from '@/store';
 import BaseContainer from '@/views/components/BaseContainer.vue';
 import ButtonLabel from '@/views/components/ButtonLabel.vue';
 import SearchInput from '@/views/components/SearchInput.vue';
-import ProfilePic from './profilePic/ProfilePic.vue';
+import ProfilePic from './children/profilePic/ProfilePic.vue';
+import Contribute from './children/Contribute.vue';
 const publicStore = usePublicStore();
 const query = ref('');
 function clickTag() {

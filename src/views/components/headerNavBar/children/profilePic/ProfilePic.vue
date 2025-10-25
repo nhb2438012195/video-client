@@ -23,6 +23,14 @@
       <Login class="w-[300px] pt-[40px] " :userData="userStore.userInfo"></Login>
     </BaseDropdownPanel>
   </div>
+          <!-- 弹窗 -->
+        <BaseModal v-model="showNoLoginUser" class="" aria-labelledby="modal-title">
+            <div class="p-6 w-[820px] ">
+                <LoginPanel class="w-[400px]" @login="onPasswordLogin" @sms-login="onSmsLogin" @get-code="onGetCode"
+                    @forgot-password="onForgot" @register="onRegister" />
+            </div>
+        </BaseModal>
+        <!-- 弹窗 -->
 </template>
 
 <script setup>
@@ -33,10 +41,40 @@ import BaseDropdownPanel from '@/views/components/BaseDropdownPanel.vue';
 import Login from './children/Login.vue';
 import { watch, computed, onMounted, ref } from 'vue';
 import HoverZoom from '@/views/components/HoverZoom.vue';
-
+import BaseModal from '@/views/components/BaseModal.vue';
+import LoginPanel from '@/views/components/LoginPanel.vue';
 const publicStore = usePublicStore();
 const userStore = useUserStore();
+const showNoLoginUser = computed({
+    get: () => userStore.showNoLoginUser,
+    set: (value) => {
+        console.log('设置 showLogin:', value);
+        userStore.setShowNoLoginUser(value);
+    }
+});
 let userimg = ref('')
+function onRegister(account, password) {
+    userStore
+        .register({ username: account, password: password })
+        .then(() => {
+            ElMessage.success('注册成功！');
+            showNoLoginUser.value = false;
+        })
+        .catch((e) => {
+            ElMessage.error(e.message);
+        });
+}
+function onPasswordLogin(account, password) {
+    userStore
+        .login({ username: account, password: password })
+        .then(() => {
+            ElMessage.success('登录成功！');
+            showNoLoginUser.value = false; // 注意：computed 的 setter 会触发
+        })
+        .catch((e) => {
+            ElMessage.error(e.message);
+        });
+}
 function init() {
   userStore.getUserInfo();
 }
