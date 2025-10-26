@@ -4,7 +4,10 @@ export function postLogin(data) {
   return request({
     url: '/user/login',
     method: 'post',
-    data
+    data,
+    headers: {
+      'Content-Type': undefined // 👈 关键！让浏览器自动设置 multipart/form-data + boundary
+    }
   })
 }
 export function postRegister(data){

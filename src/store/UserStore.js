@@ -28,7 +28,7 @@ export const useUserStore = defineStore('user', {
         })
     },
     login(data) {
-       postLogin(data)
+      return postLogin(data)
         .then(res => {
           console.log('登录成功')
           console.log(res)
@@ -46,7 +46,7 @@ export const useUserStore = defineStore('user', {
     }
     ,
     register(data) {
-      postRegister(data)
+      return postRegister(data)
         .then(res => {
           console.log('注册成功')
           console.log(res)

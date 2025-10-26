@@ -2,13 +2,13 @@
 <template>
   <div class="relative  flex items-center justify-center " @mouseenter="show = true" @mouseleave="show = false">
     <!-- 头像触发区域 -->
-    <HoverZoom :scale="2" :offset-x="1" :offset-y="-1" :disabled="userimg!=''" :forceHover="showUser" class="z-50">
+    <HoverZoom :scale="2" :offset-x="1" :offset-y="-1" :disabled="userimg != ''" :forceHover="showUser" class="z-50">
       <BaseContainer>
         <template #left>
           <div
             class="flex items-center justify-center border-white overflow-hidden rounded-full w-[40px] h-[38px] text-white cursor-pointer"
             :class="{ 'border-[2px]': userimg != '' }">
-            <img v-if="userimg!=''" :src="userimg" alt="avatar" class="w-full h-full object-cover" />
+            <img v-if="userimg != ''" :src="userimg" alt="avatar" class="w-full h-full object-cover" />
             <div v-if="!userStore.isLogin" class="flex items-center justify-center w-full h-full text-sm bg-[#00AEEC]">
               登录
             </div>
@@ -23,19 +23,20 @@
       <Login class="w-[300px] pt-[40px] " :userData="userStore.userInfo"></Login>
     </BaseDropdownPanel>
   </div>
-          <!-- 弹窗 -->
-        <BaseModal v-model="showNoLoginUser" class="" aria-labelledby="modal-title">
-            <div class="p-6 w-[820px] ">
-                <LoginPanel class="w-[400px]" @login="onPasswordLogin" @sms-login="onSmsLogin" @get-code="onGetCode"
-                    @forgot-password="onForgot" @register="onRegister" />
-            </div>
-        </BaseModal>
-        <!-- 弹窗 -->
+  <!-- 弹窗 -->
+  <BaseModal v-model="showNoLoginUser" class="text-black" aria-labelledby="modal-title">
+    <div class="p-6 w-[820px] ">
+      <LoginPanel class="w-[400px]" @login="onPasswordLogin" @sms-login="onSmsLogin" @get-code="onGetCode"
+        @forgot-password="onForgot" @register="onRegister" />
+    </div>
+  </BaseModal>
+  <!-- 弹窗 -->
 </template>
 
 <script setup>
-import { useUserStore,usePublicStore } from '@/store';
+import { useUserStore, usePublicStore } from '@/store';
 import BaseContainer from '@/views/components/BaseContainer.vue';
+import { ElMessage } from 'element-plus'
 import NotLogin from './children/NotLogin.vue';
 import BaseDropdownPanel from '@/views/components/BaseDropdownPanel.vue';
 import Login from './children/Login.vue';
@@ -46,34 +47,34 @@ import LoginPanel from '@/views/components/LoginPanel.vue';
 const publicStore = usePublicStore();
 const userStore = useUserStore();
 const showNoLoginUser = computed({
-    get: () => userStore.showNoLoginUser,
-    set: (value) => {
-        console.log('设置 showLogin:', value);
-        userStore.setShowNoLoginUser(value);
-    }
+  get: () => userStore.showNoLoginUser,
+  set: (value) => {
+    console.log('设置 showLogin:', value);
+    userStore.setShowNoLoginUser(value);
+  }
 });
 let userimg = ref('')
 function onRegister(account, password) {
-    userStore
-        .register({ username: account, password: password })
-        .then(() => {
-            ElMessage.success('注册成功！');
-            showNoLoginUser.value = false;
-        })
-        .catch((e) => {
-            ElMessage.error(e.message);
-        });
+  userStore
+    .register({ username: account, password: password })
+    .then(() => {
+      ElMessage.success('注册成功！');
+      showNoLoginUser.value = false;
+    })
+    .catch((e) => {
+      ElMessage.error(e.message);
+    });
 }
 function onPasswordLogin(account, password) {
-    userStore
-        .login({ username: account, password: password })
-        .then(() => {
-            ElMessage.success('登录成功！');
-            showNoLoginUser.value = false; // 注意：computed 的 setter 会触发
-        })
-        .catch((e) => {
-            ElMessage.error(e.message);
-        });
+  userStore
+    .login({ username: account, password: password })
+    .then(() => {
+      ElMessage.success('登录成功！');
+      showNoLoginUser.value = false; // 注意：computed 的 setter 会触发
+    })
+    .catch((e) => {
+      ElMessage.error(e.message);
+    });
 }
 function init() {
   userStore.getUserInfo();

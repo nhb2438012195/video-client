@@ -248,7 +248,8 @@
         </BaseFullPageContainer>
         <!-- 可移动的导航栏 -->
         <Teleport v-if="targetElement" :to="targetElement">
-            <HeaderNavBar class="text-white" />
+            <HeaderNavBar class="text-white ">
+            </HeaderNavBar>
         </Teleport>
         <!-- 可移动的导航栏 -->
     </div>
