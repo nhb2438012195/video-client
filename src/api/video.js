@@ -13,3 +13,17 @@ export function postUploadVideo(data){
     data
   })
 }
+export function postChunkUploadVideo(data){
+  return request({
+    url: '/video/chunkUpload',
+    method: 'post',
+    data
+  })
+}
+export function postInitChunkUpload(data){
+  return request({
+    url: '/video/initChunkUpload',
+    method: 'post',
+    data
+  })
+}

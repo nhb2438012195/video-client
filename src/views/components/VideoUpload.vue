@@ -64,7 +64,7 @@ const message = ref('')
 const hasError = ref(false)
 //是否选择
 const canSelect = ref(false)
-
+const CHUNK_SIZE = 5 * 1024 * 1024; // 10MB per chunk
 // 触发文件选择
 const triggerFileSelect = () => {
     uploadRef.value.$el.querySelector('input[type="file"]').click()
@@ -102,53 +102,65 @@ const startUpload = () => {
 // 自定义上传逻辑（重点：你在这里填入真实上传代码）
 const customUpload = async (options) => {
     const { file, onProgress, onSuccess, onError } = options
+    let uploadKey = '';
+    let totalChunks = 0;
 
-    // 🔻🔻🔻 请在此处实现你的真实上传逻辑 🔻🔻🔻
 
-    /*
-     * 示例（使用 axios）：
-     *
-     * const formData = new FormData()
-     * formData.append('video', file)
-     *
-     * try {
-     *   const response = await axios.post('/api/upload', formData, {
-     *     onUploadProgress: (progressEvent) => {
-     *       const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-     *       onProgress({ percent }) // 通知 el-upload 更新进度
-     *       uploadProgress.value = percent
-     *     }
-     *   })
-     *   onSuccess(response.data) // 上传成功
-     * } catch (err) {
-     *   onError(err) // 上传失败
-     * }
-     */
-     new Promise((resolve) => {
-        const interval = setInterval(() => {
-            const current = uploadProgress.value
-            if (current >= 100) {
-                clearInterval(interval)
-                resolve()
-            } else {
-                uploadProgress.value = Math.min(current + 10, 100)
-                onProgress({ percent: uploadProgress.value })
-            }
-        }, 200)
-    })
-    videoStore.uploadVideo(file)
-        .then(res => {
-            ElMessage.success("上传成功");
-            onSuccess(res)
-        })
-        .catch(err => {
+    // 切分文件
+    const chunks = [];
+    let start = 0;
+    while (start < file.size) {
+        const end = Math.min(start + CHUNK_SIZE, file.size);
+        chunks.push(file.slice(start, end));
+        start = end;
+    }
+    totalChunks = chunks.length;
+
+    //  初始化上传任务，前端告诉后端总共有多少分块，后端收到足够多的分块后就直接合并
+    try {
+        await videoStore.initChunkUpload({  totalChunks ,fileType: file.type });//注意这里以后应该再带上视频信息，但是现在不需要视频信息就暂时不写
+        uploadKey = videoStore.uploadKey;//本次上传的凭证
+        if (!uploadKey) {
+            throw new Error('后端未返回 uploadKey');
+        }
+    } catch (err) {
+        console.error('初始化上传失败', err);
+        ElMessage.error('初始化上传失败');
+        onError(err);
+        return;
+    }
+
+    //  上传所有分片（串行，避免浏览器卡死）这里从0开始，但是以后可以加入断点续传
+    for (let i = 0; i < chunks.length; i++) {
+        const chunk = chunks[i];
+        const partNumber = i + 1;
+        try {
+            const formData = new FormData();
+            formData.append('chunk', chunk);
+            formData.append('partNumber', partNumber);
+            formData.append('uploadKey', uploadKey);
+
+            const res = await videoStore.chunkUploadVideo(formData)
+                .then(res => {
+                    const percent = partNumber/totalChunks * 100;
+                    onProgress({ percent });
+                    ElMessage.success(`分片${partNumber} 上传成功`);
+                })
+                .catch(err => {
+                    console.error(`分片 ${partNumber} 上传失败`, err);
+                    ElMessage.error("上传失败");
+                    throw err;
+                })
+            console.log(`分片 ${partNumber} 上传成功`);
+        } catch (err) {
+            console.error(`分片 ${partNumber} 上传失败`, err);
             ElMessage.error("上传失败");
             onError(err)
-        })
-    // 🔺🔺🔺 请在此处实现你的真实上传逻辑 🔺🔺🔺
-
-    // ⚠️ 如果你暂时不实现，下面是一个模拟上传（开发时可用，上线前务必删除！）
-
+            return;
+        }
+    }
+    ElMessage.success("上传成功");
+    onSuccess({ uploadKey});
 }
 
 // 上传成功
