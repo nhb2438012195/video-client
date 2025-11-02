@@ -2,7 +2,7 @@
     <div>
         <!-- 粘性头部导航栏 -->
         <div v-show="isFixHeaderBar"
-            class=" max-w-full mx-auto fixed z-[51]   !px-[24px] bg-indigo-400  !w-full top-0 !h-[64px]">
+            class=" max-w-full mx-auto fixed z-[52]   !px-[24px] bg-indigo-400  !w-full top-0 !h-[64px]">
             <div ref="areaB"></div>
         </div>
         <!-- 粘性头部导航栏 -->

@@ -18,9 +18,9 @@
             </el-icon>
         </template>
     </BaseContainer>
-            <BaseModal v-model="show" class="" aria-labelledby="modal-title">
+            <BaseModal v-model="show" class="" aria-labelledby="modal-title" @close="close">
             <div class="p-6 w-[820px] min-h-[500px]">
-                <VideoUpload></VideoUpload>
+                <VideoUpload ref="videoUploadRef"></VideoUpload>
             </div> 
         </BaseModal>
 </template>
@@ -36,10 +36,14 @@ import BaseModal from '@/views/components/BaseModal.vue';
 import VideoUpload from '@/views/components/VideoUpload.vue';
 //Store
 const publicStore = usePublicStore();
+
 //计算属性
 const show = ref(false);
+const videoUploadRef = ref(null);
 //方法
-
+function close() {
+   videoUploadRef.value.clearSelect()
+}
 function clickTag() {
     show.value = true;
 }

@@ -16,11 +16,13 @@
             </div>
           </div>
           <!-- 视频 播放器 -->
-          <div class=" w-full aspect-[16/9] relative"></div>
+          <div class=" w-full aspect-[16/9] relative">
+            <DashVideoPlayer class="h-full w-full" :src="mpdUrl"></DashVideoPlayer>
+          </div>
           <!-- 播放器相关操作 -->
           <div class=" w-full  h-[46px] relative">
             <div class="h-full w-full">
-              <PlayerActions class="h-full w-full"></PlayerActions>
+              <PlayerActions class="h-full w-full" ></PlayerActions>
             </div>
           </div>
           <!-- 视频相关操作 -->
@@ -81,11 +83,12 @@ import VideoActions from './children/left/VideoActions.vue';
 import VideoIntro from './children/left/VideoIntro.vue';
 import VideoAuthorInfo from './children/right/VideoAuthorInfo.vue';
 import VideoDanmuInfo from './children/right/VideoDanmuInfo.vue';
+import DashVideoPlayer from './children/left/DashVideoPlayer.vue';
 //Store
 const publicStore = usePublicStore();
 //属性
 const route = useRoute()
-
+const mpdUrl = ref('http://120.26.137.2:9000/dash/d40c128d-7493-45b1-afd9-02fd3728da6e/manifest.mpd')
 //方法
 
 //生命周期

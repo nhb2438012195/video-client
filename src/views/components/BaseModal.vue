@@ -93,7 +93,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue','close'])
 
 const modalRef = ref(null)
 
@@ -107,6 +107,7 @@ const handleClose = (source) => {
   if (source === 'escape' && !props.closeOnPressEscape) return
 
   emit('update:modelValue', false)
+  emit('close')
 }
 
 // 聚焦管理

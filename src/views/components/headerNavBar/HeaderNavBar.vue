@@ -95,7 +95,7 @@
             <div
                 class="flex justify-center items-center !h-full 2xl:gap-4 xl:gap-3 gap-2 lg:min-w-[400px] sm:min-w-[300px]">
                 <!-- 头像 -->
-                <ProfilePic class="z-45"></ProfilePic>
+                <ProfilePic ></ProfilePic>
                 <!-- 头像 -->
                 <div class="">
                     <BaseContainer class=" cursor-pointer" @click="clickTag()">
