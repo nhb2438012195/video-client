@@ -76,7 +76,7 @@ import { useRoute } from 'vue-router'
 
 // 组件导入
 import HeaderNavBar from '@/views/components/headerNavBar/HeaderNavBar.vue';
-import BaseFullPageContainer from '@/views/components/BaseFullPageContainer.vue';
+import BaseFullPageContainer from '@/views/components/baseComponent/BaseFullPageContainer.vue';
 import VideoTitle from './children/left/VideoTitle.vue';
 import PlayerActions from './children/left/PlayerActions.vue';
 import VideoActions from './children/left/VideoActions.vue';
@@ -94,6 +94,7 @@ const mpdUrl = ref('http://120.26.137.2:9000/dash/d40c128d-7493-45b1-afd9-02fd37
 //生命周期
 onMounted(() => {
   console.log(route.params.id)
+  mpdUrl.value=process.env.VIDEO_URL+route.params.id+'/manifest.mpd'
 })
 onBeforeUnmount(() => {
 

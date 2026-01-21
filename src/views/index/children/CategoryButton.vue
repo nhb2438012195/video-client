@@ -7,8 +7,8 @@
 </template>
 
 <script setup>
-import BaseContainer from "@/views/components/BaseContainer.vue";
-import ButtonLabel from "@/views/components/ButtonLabel.vue";
+import BaseContainer from "@/views/components/baseComponent/BaseContainer.vue";
+import ButtonLabel from "@/views/components/baseComponent/ButtonLabel.vue";
 const props = defineProps({
         text:{
             type: String,

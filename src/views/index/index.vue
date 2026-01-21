@@ -260,10 +260,10 @@ import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue';
 import { useUserStore, useVideoCardStore, usePublicStore } from '@/store';
 import { ElMessage } from 'element-plus'; // 如果你用的是 Element Plus
 // 组件导入
-import BaseFullPageContainer from '@/views/components/BaseFullPageContainer.vue';
-import ButtonLabel from '@/views/components/ButtonLabel.vue';
-import BaseContainer from '@/views/components/BaseContainer.vue';
-import BaseFlexDiv from '@/views/components/BaseFlexDiv.vue';
+import BaseFullPageContainer from '@/views/components/baseComponent/BaseFullPageContainer.vue';
+import ButtonLabel from '@/views/components/baseComponent/ButtonLabel.vue';
+import BaseContainer from '@/views/components/baseComponent/BaseContainer.vue';
+import BaseFlexDiv from '@/views/components/baseComponent/BaseFlexDiv.vue';
 import CategoryButton from './children/CategoryButton.vue';
 import CategoryButton2 from './children/CategoryButton2.vue';
 import VideoCard from '@/views/components/videoCard/VideoCard.vue';

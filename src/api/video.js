@@ -3,7 +3,7 @@ export function getRecommendedVideoInfo(params) {
   return request({
     url: '/video/recommendedVideoInfo',
     method: 'get',
-    params
+    params 
   })
 }
 export function postUploadVideo(data){

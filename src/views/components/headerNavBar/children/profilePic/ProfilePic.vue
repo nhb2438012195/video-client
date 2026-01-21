@@ -35,14 +35,14 @@
 
 <script setup>
 import { useUserStore, usePublicStore } from '@/store';
-import BaseContainer from '@/views/components/BaseContainer.vue';
+import BaseContainer from '@/views/components/baseComponent/BaseContainer.vue';
 import { ElMessage } from 'element-plus'
 import NotLogin from './children/NotLogin.vue';
-import BaseDropdownPanel from '@/views/components/BaseDropdownPanel.vue';
+import BaseDropdownPanel from '@/views/components/baseComponent/BaseDropdownPanel.vue';
 import Login from './children/Login.vue';
 import { watch, computed, onMounted, ref } from 'vue';
-import HoverZoom from '@/views/components/HoverZoom.vue';
-import BaseModal from '@/views/components/BaseModal.vue';
+import HoverZoom from '@/views/components/baseComponent/HoverZoom.vue';
+import BaseModal from '@/views/components/baseComponent/BaseModal.vue';
 import LoginPanel from '@/views/components/LoginPanel.vue';
 const publicStore = usePublicStore();
 const userStore = useUserStore();
@@ -53,7 +53,7 @@ const showNoLoginUser = computed({
     userStore.setShowNoLoginUser(value);
   }
 });
-let userimg = ref('')
+const userimg = ref(userStore.userInfo?.avatar)
 function onRegister(account, password) {
   userStore
     .register({ username: account, password: password })
@@ -77,7 +77,7 @@ function onPasswordLogin(account, password) {
     });
 }
 function init() {
-  userStore.getUserInfo();
+  
 }
 
 function reset() {
@@ -100,7 +100,7 @@ watch(
   (newVal, oldVal) => {
     console.log('用户信息变化:', oldVal, '->', newVal);
     userimg.value = newVal?.avatar || '';
-    console.log('用户头像:', userimg);
+    console.log('用户头像:', userimg.value);
   },
   { deep: true }
 );

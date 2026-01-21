@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@stomp/stompjs':
+        specifier: ^7.2.1
+        version: 7.2.1
       axios:
         specifier: ^1.12.2
         version: 1.12.2
@@ -732,6 +735,9 @@ packages:
 
   '@soda/get-current-script@1.0.2':
     resolution: {integrity: sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==}
+
+  '@stomp/stompjs@7.2.1':
+    resolution: {integrity: sha512-DLd/WeicnHS5SsWWSk3x6/pcivqchNaEvg9UEGVqAcfYEBVmS9D6980ckXjTtfpXLjdLDsd96M7IuX4w7nzq5g==}
 
   '@svta/common-media-library@0.12.4':
     resolution: {integrity: sha512-9EuOoaNmz7JrfGwjsrD9SxF9otU5TNMnbLu1yU4BeLK0W5cDxVXXR58Z89q9u2AnHjIctscjMTYdlqQ1gojTuw==}
@@ -5018,6 +5024,8 @@ snapshots:
       webpack: 5.102.1
 
   '@soda/get-current-script@1.0.2': {}
+
+  '@stomp/stompjs@7.2.1': {}
 
   '@svta/common-media-library@0.12.4': {}
 

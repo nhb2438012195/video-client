@@ -10,9 +10,15 @@ export const useUserStore = defineStore('user', {
     showUser: false,
     showNoLoginUser: false,
     isLogin: (getCookie(process.env.VUE_APP_TOKEN_NAME || 'token') || '') !== '',
-    userInfo: {},
+    userInfo: {
+      userId:'-1',
+      avatar:""
+    },
   }),
   actions: {
+    init() {
+      this.getUserInfo()
+    },
     getUserInfo() {
       getUserInfo()
         .then(res => {
@@ -24,39 +30,36 @@ export const useUserStore = defineStore('user', {
           console.log('获取用户信息失败')
           console.log(err)
           removeCookie(process.env.VUE_APP_TOKEN_NAME || 'token')
-          throw new Error(err)
         })
     },
-    login(data) {
-      return postLogin(data)
-        .then(res => {
-          console.log('登录成功')
-          console.log(res)
-          this.token = res.data.token
-          setCookie('userName', res.data.username)
-          setCookie(process.env.VUE_APP_TOKEN_NAME || 'token', res.data.token)
-          this.isLogin = true
-          return res
-        })
-        .catch(err => {
-          console.log('登录失败')
-          console.log(err)
-          throw new Error(err)
-        })
+    async login(data) {
+      try {
+        const res = await postLogin(data)
+        console.log('登录成功')
+        console.log(res)
+        this.token = res.data.token
+        setCookie('userName', res.data.username)
+        setCookie(process.env.VUE_APP_TOKEN_NAME || 'token', res.data.token)
+        this.isLogin = true
+        return res
+      } catch (err) {
+        console.log('登录失败')
+        console.log(err)
+        throw new Error(err)
+      }
     }
     ,
-    register(data) {
-      return postRegister(data)
-        .then(res => {
-          console.log('注册成功')
-          console.log(res)
-          return res
-        })
-        .catch(err => {
-          console.log('注册失败')
-          console.log(err)
-          throw new Error(err)
-        })
+    async register(data) {
+      try {
+        const res = await postRegister(data)
+        console.log('注册成功')
+        console.log(res)
+        return res
+      } catch (err) {
+        console.log('注册失败')
+        console.log(err)
+        throw new Error(err)
+      }
     },
     //   //退出登录
     //  async logout() {

@@ -18,11 +18,11 @@
             </el-icon>
         </template>
     </BaseContainer>
-            <BaseModal v-model="show" class="" aria-labelledby="modal-title" @close="close">
-            <div class="p-6 w-[820px] min-h-[500px]">
-                <VideoUpload ref="videoUploadRef"></VideoUpload>
-            </div> 
-        </BaseModal>
+    <BaseModal v-model="show" class="" aria-labelledby="modal-title" @close="close">
+        <div class="p-6 w-[820px] min-h-[500px]">
+            <VideoUpload ref="videoUploadRef"></VideoUpload>
+        </div>
+    </BaseModal>
 </template>
 
 <script setup>
@@ -30,10 +30,11 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { usePublicStore } from '@/store';
 
 // 组件导入
-import BaseContainer from '@/views/components/BaseContainer.vue'
-import ButtonLabel from '@/views/components/ButtonLabel.vue'
-import BaseModal from '@/views/components/BaseModal.vue';
+import BaseContainer from '@/views/components/baseComponent/BaseContainer.vue'
+import ButtonLabel from '@/views/components/baseComponent/ButtonLabel.vue'
+import BaseModal from '@/views/components/baseComponent/BaseModal.vue';
 import VideoUpload from '@/views/components/VideoUpload.vue';
+import BaseFullPageContainer from '../../baseComponent/BaseFullPageContainer.vue';
 //Store
 const publicStore = usePublicStore();
 
@@ -42,7 +43,7 @@ const show = ref(false);
 const videoUploadRef = ref(null);
 //方法
 function close() {
-   videoUploadRef.value.clearSelect()
+    videoUploadRef.value.clearSelect()
 }
 function clickTag() {
     show.value = true;
