@@ -1,7 +1,7 @@
 <template>
     <div class="h-full w-full bg-slate-200 flex flex-col">
         <div class="h-[40px]">
-            <div v-if="chatTarget != 'null'" class="h-full w-full flex items-center justify-center  bg-gray-100">
+            <div  class="h-full w-full flex items-center justify-center  bg-gray-100">
                 {{ messageStore.selectedConversation?.conversationUserInfoVO.name }}
             </div>
         </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount,watch,nextTick,computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount,watch,nextTick,computed,onUpdated } from 'vue'
 import { usePublicStore ,useMessageStore} from '@/store';
 import ChatMessage from './ChatMessage.vue';
 import MessageInput from './MessageInput.vue';
@@ -52,6 +52,10 @@ const messageList = computed(() => {
 onMounted(() => {
     messageStore.setChatConversation(route.params.conversationId)
 })
+onUpdated(() => {
+    scrollToBottom()
+})
+
 onBeforeUnmount(() => {
 
 })

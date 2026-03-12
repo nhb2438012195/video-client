@@ -237,7 +237,7 @@
                         <!-- 小卡片-->
                         <div v-for="card in videoCardStore.DynamicVideoCard" :key="card.id" :data="card"
                             class="!z-0 aspect-[266.41/224.84] bg-slate-600 overflow-hidden rounded-lg">
-                            <VideoCard :id="card.id">
+                            <VideoCard :id="card.id" :type="Dynamic">
                             </VideoCard>
                         </div>
                     </div>
@@ -272,6 +272,7 @@ import HeaderNavBar from '@/views/components/headerNavBar/HeaderNavBar.vue';
 const userStore = useUserStore();
 const videoCardStore = useVideoCardStore();
 const publicStore = usePublicStore();
+
 //属性
 const isFixHeaderBar = ref(false);
 const bgimg = ref('/123cec01a7bde68ab530f773ed179c4f.png');
@@ -279,6 +280,7 @@ const dynamicimg = ref('http://120.26.137.2:9000/public/DefaultImage.png');
 const areaA = ref(null)
 const areaB = ref(null)
 // ====== 方法 ======
+
 
 // 动态计算目标 DOM 元素
 const targetElement = computed(() => {

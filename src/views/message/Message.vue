@@ -31,7 +31,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { usePublicStore } from '@/store';
 import BaseFullPageContainer from '@/views/components/baseComponent/BaseFullPageContainer.vue';
 import MyMessage from './children/right/MyMessage.vue';
-import MessageOption from './children/left/MessageOptions.vue';
+import MessageOption from './children/MessageOptions/MessageOptions.vue';
 import MessageConversation from './children/right/MessageConversation/MessageConversation.vue';
 import HeaderNavBar from '@/views/components/headerNavBar/HeaderNavBar.vue';
 // 组件导入

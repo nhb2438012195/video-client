@@ -88,13 +88,14 @@ import DashVideoPlayer from './children/left/DashVideoPlayer.vue';
 const publicStore = usePublicStore();
 //属性
 const route = useRoute()
-const mpdUrl = ref('http://120.26.137.2:9000/dash/d40c128d-7493-45b1-afd9-02fd3728da6e/manifest.mpd')
+const mpdUrl = ref('http://47.115.227.193:9000/dash/36cb83e2-5a28-468d-be8d-360903d570a8/manifest.mpd')
 //方法
 
 //生命周期
 onMounted(() => {
-  console.log(route.params.id)
-  mpdUrl.value=process.env.VIDEO_URL+route.params.id+'/manifest.mpd'
+  console.log(process.env.VUE_APP_VIDEO_URL)
+
+  mpdUrl.value=process.env.VUE_APP_VIDEO_URL+"/dash/"+route.params.id+'/manifest.mpd'
 })
 onBeforeUnmount(() => {
 

@@ -29,6 +29,7 @@ export const useUserStore = defineStore('user', {
         .catch(err => {
           console.log('获取用户信息失败')
           console.log(err)
+          this.userInfo.userId='-2'
           removeCookie(process.env.VUE_APP_TOKEN_NAME || 'token')
         })
     },

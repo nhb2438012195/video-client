@@ -71,6 +71,7 @@ function onPasswordLogin(account, password) {
     .then(() => {
       ElMessage.success('登录成功！');
       showNoLoginUser.value = false; // 注意：computed 的 setter 会触发
+      window.location.reload();
     })
     .catch((e) => {
       ElMessage.error(e.message);

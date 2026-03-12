@@ -2,10 +2,9 @@
   <!-- 视频卡片组件 -->
   <div class="z-0 h-full w-full relative flex gap-2 flex-col bg-white overflow-hidden transition-colors duration-150 ">
     <!-- 封面区域：包含视频缩略图、播放按钮、播放量、时长、功能图标 -->
-    <div 
-      class="relative aspect-video cursor-pointer bg-gray-800 flex items-center justify-center overflow-hidden"
+    <a class="relative aspect-video cursor-pointer bg-gray-800 flex items-center justify-center overflow-hidden"
       @mousemove="handleCoverMouseMove" @mouseenter="handleCoverMouseEnter" @mouseleave="handleCoverMouseLeave"
-      @click="handleCoverClick">
+      :href="videoPlayUrl">
       <!-- 插槽：封面图片 -->
       <!-- 默认占位图 -->
       <img :src="videoCardInfo.videoCover" alt="视频封面" class="w-full h-full object-fill" />
@@ -34,16 +33,17 @@
       <!-- 功能图标占位（收藏、分享） -->
       <div class="absolute left-4 flex space-x-1">
       </div>
-    </div>
+    </a>
 
     <!-- 标题与作者区域 -->
     <div class="overflow-hidden">
       <!-- 标题 -->
-      <div
-        class="text-xs font-semibold text-gray-900  leading-tight h-[40px] overflow-hidden  ">
-          <span class=" text-sm overflow-hidden cursor-pointer hover:text-blue-600">
-            {{ videoCardInfo.videoTitle }}
-          </span>
+      <div class="text-xs font-semibold text-gray-900  leading-tight h-[40px] overflow-hidden  ">
+        <a :href="videoPlayUrl">
+        <span class=" text-sm overflow-hidden cursor-pointer hover:text-blue-600">
+          {{ videoCardInfo.videoTitle }}
+        </span>
+        </a>
       </div>
 
       <!-- 作者信息 -->
@@ -73,22 +73,42 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { useVideoCardStore,usePublicStore } from '@/store';
+import { ref, onMounted, watch,computed } from 'vue'
+import { useVideoCardStore, usePublicStore } from '@/store';
+import { useRouter} from 'vue-router'
 // 引入store
 const videoCard = useVideoCardStore()
 const publicStore = usePublicStore()
-
+const router = useRouter()
 //卡片是否加载完成
 const isLoaded = ref(false);
-const videoCardInfo = ref({
-  videoCover: '',
-  videoTitle: '',
-  videoAuthor: '',
-  videoLength: '',
-  videoPlayVolume: '',
-  createTime: '',
-  videoBarrageVolume: '',
+const dynamicvideoCardInfo=ref({
+      // 封面
+    videoCover: '',
+    // 标题
+    videoTitle: '',
+    // 作者（存作者主页链接）
+    videoAuthor: '',
+    // 时长
+    videoLength: '',
+    // 播放次数
+    videoPlayVolume: '',
+    // 创建时间
+    createTime: '',
+    // 弹幕数量
+    videoBarrageVolume: '',
+    //视频链接
+    videoLink: '',
+})
+// 1. 直接定义响应式的 computed 变量，自动判断类型
+const videoCardInfo = computed(() => {
+  if (props.type === 'Profile') {
+    return videoCard.DynamicVideoCard.value[props.authorId]?.[props.order]
+  }
+  return dynamicvideoCardInfo.value
+})
+const videoPlayUrl = computed(() => {
+  return process.env.VUE_APP_VIDEO_PLAY+videoCardInfo.value.videoLink
 })
 // ========================
 
@@ -97,6 +117,24 @@ const props = defineProps({
   id: {
     type: String,
     required: true,
+  },
+  //视频卡片类型
+  type: {
+    type: String,
+    required: false,
+    default: 'Dynamic',
+  },
+  //视频作者id，用于寻找视频信息
+  authorId: {
+    type: String,
+    required: false,
+    default: '-1',
+  },
+  //视频顺序
+  order: {
+    type: Number,
+    required: false,
+    default: 0,
   },
 })
 
@@ -107,25 +145,11 @@ const props = defineProps({
 
 let unwatchPreload = null
 
-unwatchPreload = watch(
-  () => videoCard.isPreloadNotReady,
-  (newVal) => {
-    // 只处理未加载且预加载已完成的情况
-    if (!isLoaded.value && newVal === false) {
-      const info = videoCard.getCardInfo()
-      if (info) {
-        videoCardInfo.value = info
-        handleCoverLoaded()
-
-        // ✅ 一次性取消监听（只调用一次）
-        unwatchPreload?.()
-        unwatchPreload = null
-      }
-    }
-  },
-  { immediate: true } // 建议加上，避免错过已就绪状态
-)
-
+function handleCoverClick() {
+  console.log('点击封面')
+  // 跳转视频页面
+  router.push(process.env.VUE_APP_VIDEO_PLAY+videoCardInfo.value.videoLink)
+}
 
 // 鼠标进入封面
 function handleCoverMouseEnter() {
@@ -147,6 +171,27 @@ function handleCoverLoaded() {
 onMounted(() => {
   //暂时默认已经加载完成
   //handleCoverLoaded()
+  // 监听预加载状态
+  if (props.type == 'Dynamic') {//该卡片为推荐视频
+    unwatchPreload = watch(
+      () => videoCard.isPreloadNotReady,
+      (newVal) => {
+        // 只处理未加载且预加载已完成的情况
+        if (!isLoaded.value && newVal === false) {
+          const info = videoCard.getCardInfo()
+          if (info) {
+            dynamicvideoCardInfo.value = info
+            handleCoverLoaded()
+            // ✅ 一次性取消监听（只调用一次）
+            unwatchPreload?.()
+            unwatchPreload = null
+          }
+        }
+      },
+      { immediate: true } // 建议加上，避免错过已就绪状态
+    )
+  }
+
 })
 // 鼠标在封面移动时触发（暂时不需要）
 function handleCoverMouseMove(e) {

@@ -4,25 +4,25 @@
         :class="[customClass]" @click.stop>
         <!-- 头部区域：用户ID和等级 -->
         <div class="px-4 py-3 text-center ">
-            <div class="text-xl font-bold text-gray-900">{{ name }}</div>
-            <div class="text-sm text-red-600 font-semibold mt-1">LV{{ lv }}</div>
+            <div class="text-xl font-bold text-gray-900">{{ userData.name }}</div>
+            <div class="text-sm text-red-600 font-semibold mt-1">LV{{userData.lv }}</div>
             <div class="text-xs text-gray-500 mt-1 flex justify-center gap-4">
-                <span>硬币: {{coin }}</span>
+                <span>硬币: {{userData.coin }}</span>
             </div>
         </div>
 
         <!-- 关注/粉丝/动态统计 -->
         <div class="flex justify-around px-4 py-3  border-b border-gray-200">
             <div class="text-center">
-                <div class="text-lg font-semibold text-gray-800">{{ follow_quantity }}</div>
+                <div class="text-lg font-semibold text-gray-800">{{ userData.follow_quantity }}</div>
                 <div class="text-xs text-gray-500">关注</div>
             </div>
             <div class="text-center">
-                <div class="text-lg font-semibold text-gray-800">{{ fans_quantity }}</div>
+                <div class="text-lg font-semibold text-gray-800">{{ userData.fans_quantity }}</div>
                 <div class="text-xs text-gray-500">粉丝</div>
             </div>
             <div class="text-center">
-                <div class="text-lg font-semibold text-gray-800">{{ dynamic_quantity }}</div>
+                <div class="text-lg font-semibold text-gray-800">{{ userData.dynamic_quantity }}</div>
                 <div class="text-xs text-gray-500">动态</div>
             </div>
         </div>
@@ -76,7 +76,14 @@ const props = defineProps({
   userData: {
     type: Object,
     required: true,
-    default: () => ({})
+    default: () => ({
+        name: '用户名',
+        lv: 1,
+        coin: 0,
+        followQuantity: 0,
+        fansQuantity: 0,
+        dynamicQuantity: 0
+    })
   },
   menuItems: {
     type: Array,

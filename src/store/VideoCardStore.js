@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { setCookie, getCookie, removeCookie } from '@/utils/cookies'
 import { v4 as uuidv4 } from 'uuid'
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 import { getRecommendedVideoInfo } from '@/api/video'
 export const useVideoCardStore = defineStore('videoCard', {
     state: () => ({
+        //动态视频卡片
         DynamicVideoCard: [],
         // 未加载的卡片数量，如果为0就代表允许加载更多卡片，否则就不允许
         unloadedCardsCount: 0,
@@ -14,6 +15,8 @@ export const useVideoCardStore = defineStore('videoCard', {
         tempRecommendedVideoInfo: [],
         //是否已经发送请求获取推荐视频信息，如果没发送请求说明有数据可以被获取，如果在发送请求说明没数据应该等待
         isPreloadNotReady: false,
+        //用户主页视频卡片集合
+        UserVideoCard: ref({}),
     }),
     actions: {
         //创建指定数量的视频卡片

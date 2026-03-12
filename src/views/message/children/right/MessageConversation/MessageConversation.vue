@@ -11,7 +11,6 @@
         </div>
         <!-- 聊天内容 -->
         <div class="h-full w-full">
-
             <router-view></router-view>
         </div>
     </div>

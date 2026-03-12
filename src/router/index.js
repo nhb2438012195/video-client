@@ -4,6 +4,12 @@ const videoPlay = () => import('@/views/videoPlay/VideoPlay.vue')
 const message = () => import('@/views/message/Message.vue')
 const MyMessage = () => import('@/views/message/children/right/MyMessage.vue')
 const conversation = () => import('@/views/message/children/right/MessageConversation/children/ConversationPanel.vue')
+const userProfile = () => import('@/views/UserProfile/UserProfile.vue')
+const userInfo = () => import('@/views/UserProfile/UserInfo/UserInfo.vue')
+
+const userVideo = () => import('@/views/UserProfile/UserInfo/UserVideo/UserVideo.vue')
+const dynamic = () => import('@/views/UserProfile/UserInfo/UserDynamic/UserDynamic.vue')
+
 const routes = [
   {
     path: '/',
@@ -33,7 +39,32 @@ const routes = [
         ]
       },
     ]
-  }
+  },
+  {
+    path: '/userProfile',
+    name: 'userProfile',
+    component: userProfile,
+    children: [
+      {
+        path: ":uid",
+        name: "userInfo",
+        component: userInfo,
+        children: [
+          {
+            path:"home",
+            name: "userVideo",
+            component: userVideo,
+          },
+          {
+            path: "dynamic",
+            name: "dynamic",
+            component: dynamic,
+          }
+        ]
+      }
+    ]
+  },
+
 ]
 
 const router = createRouter({

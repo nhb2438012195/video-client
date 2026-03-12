@@ -2,7 +2,7 @@ import request from '@/utils/request'
 //登录
 export function getConversationList(params){
   return request({
-    url: '/message/getConversationList',
+    url: '/message/conversation/list',
     method: 'get',
     params 
   })

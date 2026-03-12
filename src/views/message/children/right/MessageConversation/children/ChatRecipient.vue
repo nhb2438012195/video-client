@@ -7,7 +7,7 @@
       <div class="flex items-center p-3 space-x-3">
         <!-- 头像区域 -->
         <div class="relative flex-shrink-0">
-          <img :src="recipientData.conversationUserInfoVO.avatar" alt="用户头像"
+          <img :src="recipientData.conversationUserInfoVO?.avatar" alt="用户头像"
             class="w-10 h-10 rounded-full object-cover border-2 border-gray-100"
             :class="{ 'border-blue-500': isHighlighted }" />
           <div v-if="isOnline"
@@ -17,7 +17,7 @@
         <!-- 内容区域 -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">
-            <span class="text-sm font-medium text-gray-800 truncate">{{ recipientData.conversationUserInfoVO.name
+            <span class="text-sm font-medium text-gray-800 truncate">{{ recipientData.conversationUserInfoVO?.name
               }}</span>
             <span v-if="isVip" class="text-xs text-yellow-500 font-bold">VIP</span>
           </div>
@@ -37,7 +37,7 @@
 
 <script setup>
 import { useMessageStore } from '@/store';
-import { computed, onMounted, inject } from 'vue';
+import { computed, onMounted, inject, ref } from 'vue';
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -48,8 +48,6 @@ const messageStore = useMessageStore();
 // 定义 props（与原组件一致）
 const props = defineProps({
   recipientData: {
-    type: Object,
-    default: () => ({
       conversationId: '-1',
       recipientUserId: '-1',
       lastMessageContent: "[自动回复]求给个三连+关ddddddddddddddddddd",
@@ -58,10 +56,9 @@ const props = defineProps({
       messageVOList: [],
       conversationUserInfoVO: {
         name: "123456",
-        avatar: 'http://120.26.137.2:9000/public/DefaultImage.png'
+        avatar: 'http://47.115.227.193:9000/public/DefaultImage.png'
       },
-    })
-  },
+    },
 
   isOnline: {
     type: Boolean,
@@ -109,7 +106,6 @@ const handleClick = (event) => {
       conversationId: props.recipientData.conversationId
     }
   })
-  //scrollToBottom()
 };
 
 // 工具方法（如果其他地方要用，可导出；否则可删）

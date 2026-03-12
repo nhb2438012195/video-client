@@ -31,7 +31,7 @@ import { useUserStore ,useMessageStore} from '@/store'
 const userStore = useUserStore()
 const messageStore = useMessageStore()
 const isRight = ref(false)
-const avatar = ref('http://120.26.137.2:9000/public/DefaultImage.png')
+const avatar = ref('http://47.115.227.193:9000/public/DefaultImage.png')
 const props = defineProps({
   messageData: {
     type: Object,
@@ -77,7 +77,7 @@ const contentFontSize = computed(() => {
 
 // 方法
 const onAvatarError = (event) => {
-  event.target.src = 'http://120.26.137.2:9000/public/DefaultImage.png'
+  event.target.src = ''
 }
 
 const initComponent = () => {
@@ -85,7 +85,7 @@ const initComponent = () => {
   if (userStore.userInfo.userId == props.messageData.toUserId){
   //对方发送的
      isRight.value=false
-     avatar.value =messageStore.selectedConversation.conversationUserInfoVO.avatar
+     avatar.value =messageStore.selectedConversation?.conversationUserInfoVO.avatar
   }
   else{
         // 自己发送的
