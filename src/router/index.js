@@ -4,10 +4,10 @@ const videoPlay = () => import('@/views/videoPlay/VideoPlay.vue')
 const message = () => import('@/views/message/Message.vue')
 const MyMessage = () => import('@/views/message/children/right/MyMessage.vue')
 const conversation = () => import('@/views/message/children/right/MessageConversation/children/ConversationPanel.vue')
-const userProfile = () => import('@/views/UserProfile/UserProfile.vue')
-const userInfo = () => import('@/views/UserProfile/UserInfo/UserInfo.vue')
+const userProfile = () => import('@/views/UserProfile/index.vue')
+const userInfo = () => import('@/views/UserProfile/UserInfo/index.vue')
 
-const userVideo = () => import('@/views/UserProfile/UserInfo/UserVideo/UserVideo.vue')
+const Homepage = () => import('@/views/UserProfile/UserInfo/UserVideo/UserVideo.vue')
 const dynamic = () => import('@/views/UserProfile/UserInfo/UserDynamic/UserDynamic.vue')
 
 const routes = [
@@ -51,9 +51,9 @@ const routes = [
         component: userInfo,
         children: [
           {
-            path:"home",
-            name: "userVideo",
-            component: userVideo,
+            path:"",
+            name: "Homepage",
+            component: Homepage,
           },
           {
             path: "dynamic",

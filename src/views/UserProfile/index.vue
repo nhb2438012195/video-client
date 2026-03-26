@@ -15,10 +15,13 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { usePublicStore } from '@/store';
+import { useRouter } from 'vue-router'
 
 // 组件导入
+
 import HeaderNavBar from '@/views/components/headerNavBar/HeaderNavBar.vue';
 //Store
+const router = useRouter();
 const publicStore = usePublicStore();
 //计算属性
 
@@ -26,6 +29,7 @@ const publicStore = usePublicStore();
 
 //生命周期
 onMounted(() => {
+
 
 })
 onBeforeUnmount(() => {

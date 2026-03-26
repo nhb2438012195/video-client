@@ -97,8 +97,8 @@ const dynamicvideoCardInfo=ref({
     createTime: '',
     // 弹幕数量
     videoBarrageVolume: '',
-    //视频链接
-    videoLink: '',
+    //视频播放id
+    videoPlayId: '',
 })
 // 1. 直接定义响应式的 computed 变量，自动判断类型
 const videoCardInfo = computed(() => {
@@ -108,7 +108,7 @@ const videoCardInfo = computed(() => {
   return dynamicvideoCardInfo.value
 })
 const videoPlayUrl = computed(() => {
-  return process.env.VUE_APP_VIDEO_PLAY+videoCardInfo.value.videoLink
+  return process.env.VUE_APP_VIDEO_PLAY+videoCardInfo.value.videoPlayId
 })
 // ========================
 
@@ -148,7 +148,7 @@ let unwatchPreload = null
 function handleCoverClick() {
   console.log('点击封面')
   // 跳转视频页面
-  router.push(process.env.VUE_APP_VIDEO_PLAY+videoCardInfo.value.videoLink)
+  router.push(process.env.VUE_APP_VIDEO_PLAY+videoCardInfo.value.videoPlayId)
 }
 
 // 鼠标进入封面

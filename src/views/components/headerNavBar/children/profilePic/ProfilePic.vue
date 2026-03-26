@@ -8,7 +8,7 @@
           <div
             class="flex items-center justify-center border-white overflow-hidden rounded-full w-[40px] h-[38px] text-white cursor-pointer"
             :class="{ 'border-[2px]': userimg != '' }">
-            <img v-if="userimg != ''" :src="userimg" alt="avatar" class="w-full h-full object-cover" />
+            <img v-if="userimg != ''" :src="userimg" alt="avatar" class="w-full h-full object-cover" @click="userProfile" />
             <div v-if="!userStore.isLogin" class="flex items-center justify-center w-full h-full text-sm bg-[#00AEEC]">
               登录
             </div>
@@ -44,6 +44,8 @@ import { watch, computed, onMounted, ref } from 'vue';
 import HoverZoom from '@/views/components/baseComponent/HoverZoom.vue';
 import BaseModal from '@/views/components/baseComponent/BaseModal.vue';
 import LoginPanel from '@/views/components/LoginPanel.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const publicStore = usePublicStore();
 const userStore = useUserStore();
 const showNoLoginUser = computed({
@@ -54,6 +56,9 @@ const showNoLoginUser = computed({
   }
 });
 const userimg = ref(userStore.userInfo?.avatar)
+function  userProfile() {
+  router.push('/userProfile/' + userStore.userInfo?.userId)
+}
 function onRegister(account, password) {
   userStore
     .register({ username: account, password: password })

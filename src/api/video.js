@@ -27,3 +27,11 @@ export function postInitChunkUpload(data){
     data
   })
 }
+
+export function getVideoPlay(params) {
+  return request({
+    url: '/video/play',
+    method: 'get',
+    params 
+  })
+}

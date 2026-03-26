@@ -24,7 +24,7 @@ export const useUserStore = defineStore('user', {
         .then(res => {
           console.log('获取用户信息成功')
           this.userInfo = res.data
-          console.log(this.userInfo)
+          console.log("用户信息"+this.userInfo)
         })
         .catch(err => {
           console.log('获取用户信息失败')

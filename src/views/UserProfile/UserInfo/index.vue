@@ -25,9 +25,9 @@ import { usePublicStore } from '@/store';
 import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
 // 组件导入
-import User from "./User/User.vue"
-import UserOptions from './UserOptions/UserOptions.vue';
-import UserVideo from './UserVideo/UserVideo.vue';
+import User from "./User.vue"
+import UserOptions from './UserOptions.vue';
+import UserVideo from './UserVideo.vue';
 //Store
 const publicStore = usePublicStore();
 const router = useRouter()
@@ -41,7 +41,7 @@ const route = useRoute()
  }
 //生命周期
 onMounted(() => {
-
+  //  router.push(`/userProfile/${route.params.uid }/Homepage`)
 })
 onBeforeUnmount(() => {
 
