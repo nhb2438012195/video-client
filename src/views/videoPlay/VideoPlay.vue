@@ -71,7 +71,6 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { usePublicStore } from '@/store';
 import { useRoute } from 'vue-router'
 
 // 组件导入
