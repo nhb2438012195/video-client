@@ -1,15 +1,19 @@
 <template>
   <!-- 视频互动操作栏组件 -->
-  <div class="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200">
+  <div class="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200 select-none">
     <!-- 左侧：点赞、硬币、收藏、分享 -->
     <div class="flex items-center gap-6 text-sm text-gray-700">
       <!-- 点赞 -->
-      <div class="flex items-center gap-2 cursor-pointer hover:text-blue-500 transition-colors">
+      <div 
+        class="flex items-center gap-2 cursor-pointer transition-colors"
+        :class="isLiked ? 'text-red-500' : 'hover:text-blue-500'"
+        @click="toggleLike"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 9V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v4m0 0v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"></path>
           <polyline points="14 9 9 4 4 9"></polyline>
         </svg>
-        <span>{{ likeCount }}万</span>
+        <span>点赞： {{ displayLikeCount }}</span>
       </div>
 
       <!-- 硬币 -->
@@ -18,7 +22,7 @@
           <circle cx="12" cy="12" r="10"></circle>
           <path d="M12 8v4M12 16h.01"></path>
         </svg>
-        <span>{{ coinCount }}万</span>
+        <span>{{ coinCount }}</span>
       </div>
 
       <!-- 收藏 -->
@@ -26,7 +30,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
         </svg>
-        <span>{{ favoriteCount }}万</span>
+        <span>{{ favoriteCount }}</span>
       </div>
 
       <!-- 分享 -->
@@ -83,43 +87,58 @@
 </template>
 
 <script setup>
-// 定义 props，接收外部传入的数据
+import { ref ,computed} from 'vue'
+import { ElMessage } from 'element-plus'
+import { likeVideo } from '@/api/video'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+const videoDetailsId= computed(() => route.params.id)
+// 父组件传值
 const props = defineProps({
-  // 点赞数（单位：万）
-  likeCount: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  // 硬币数（单位：万）
-  coinCount: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  // 收藏数（单位：万）
-  favoriteCount: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  // 分享数
-  shareCount: {
-    type: Number,
-    required: true,
-    default: 0
-  }
+  likeCount: { type: Number, required: true, default: 0 },
+  coinCount: { type: Number, required: true, default: 0 },
+  favoriteCount: { type: Number, required: true, default: 0 },
+  shareCount: { type: Number, required: true, default: 0 },
+  isLikedProp: { type: Boolean, default: false ,default: false}
 })
 
-// 处理更多操作的点击事件
+// 本地状态
+const isLiked = ref(props.isLikedProp)
+const displayLikeCount = ref(props.likeCount)
+
+// ==============================================
+// 核心优化：前端立即更新 + 后端异步请求
+// ==============================================
+const toggleLike = () => {
+  // 1. 前端立即修改状态和数字（不等待接口！！！）
+  const oldStatus = isLiked.value
+  isLiked.value = !oldStatus
+
+  if (isLiked.value) {
+    displayLikeCount.value++
+  } else {
+    displayLikeCount.value--
+  }
+
+  // 2. 异步发送请求，不阻塞页面
+  const actionType = oldStatus ? 2 : 1
+  likeVideo({
+    likeActionId: videoDetailsId.value,
+    actionType: actionType
+  }).catch(err => {
+    // 3. 接口失败只提示，不回滚页面
+    console.error('点赞同步失败：', err)
+    ElMessage.error('点赞同步失败，请稍后重试')
+  })
+}
+
+// 更多操作
 const handleCommand = (command) => {
-  console.log('点击了:', command)
-  // 可以触发对应的操作逻辑
+  console.log('点击操作：', command)
 }
 </script>
 
 <style scoped>
-/* 自定义样式：确保图标和文字对齐 */
 .el-dropdown-link {
   display: flex;
   align-items: center;

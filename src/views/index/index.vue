@@ -237,7 +237,7 @@
                         <!-- 小卡片-->
                         <div v-for="card in videoCardStore.DynamicVideoCard" :key="card.id" :data="card"
                             class="!z-0 aspect-[266.41/224.84] bg-slate-600 overflow-hidden rounded-lg">
-                            <VideoCard :id="card.id" :type="Dynamic">
+                            <VideoCard :id="card.id" :type="'Dynamic'">
                             </VideoCard>
                         </div>
                     </div>

@@ -7,8 +7,8 @@ const conversation = () => import('@/views/message/children/right/MessageConvers
 const userProfile = () => import('@/views/UserProfile/index.vue')
 const userInfo = () => import('@/views/UserProfile/UserInfo/index.vue')
 
-const Homepage = () => import('@/views/UserProfile/UserInfo/UserVideo/UserVideo.vue')
-const dynamic = () => import('@/views/UserProfile/UserInfo/UserDynamic/UserDynamic.vue')
+const Homepage = () => import('@/views/UserProfile/UserInfo/UserVideo.vue')
+const dynamic = () => import('@/views/UserProfile/UserInfo/UserDynamic.vue')
 
 const routes = [
   {

@@ -6,6 +6,7 @@ export const useVideoStore = defineStore('video', {
     state: () => ({
         uploadKey: null,
         videoPlay: {},
+        VideoDetails: {},
     }),
     actions: {
 
@@ -14,7 +15,7 @@ export const useVideoStore = defineStore('video', {
                 this.videoPlay = null; // 无 ID 时清空，避免残留旧数据
                 return;
             }
-
+            
             this.isLoading = true;
             try {
                 console.log(`正在加载视频 ${id}...`);

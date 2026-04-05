@@ -33,7 +33,7 @@ service.interceptors.response.use(
     // 根据后端返回的数据结构做统一处理
     const res = response.data
     // 假设后端约定 code 为 200 表示成功
-    if (res.code !== 1) {
+    if (res.code !== 200) {
       // 处理业务错误
       console.error('业务错误:', res.msg || '请求失败')
       return Promise.reject(new Error(res.msg || '请求失败'))

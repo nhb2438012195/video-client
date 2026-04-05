@@ -142,6 +142,13 @@ const mpdUrl = computed(() => {
 
   return fullUrl
 })
+/**
+ * 视频详情
+ *
+**/
+const VideoDetails=computed(()=>{ 
+  return videoStore.videoDetails
+})
 
 // ========== 5. 监听 & 生命周期 ==========
 /**

@@ -23,13 +23,14 @@ import HeaderNavBar from '@/views/components/headerNavBar/HeaderNavBar.vue';
 //Store
 const router = useRouter();
 const publicStore = usePublicStore();
+import { useVideoCardStore } from '@/store/VideoCardStore'
+const videoCardStore  = useVideoCardStore()
 //计算属性
 
 //方法
 
 //生命周期
 onMounted(() => {
-
 
 })
 onBeforeUnmount(() => {
